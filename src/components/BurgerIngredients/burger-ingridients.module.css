@@ -1,0 +1,10 @@
+.burger {
+    max-height: 100vh;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+}

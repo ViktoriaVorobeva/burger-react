@@ -1,28 +1,27 @@
-import React, { useState  } from "react";
-import {
-  Tab,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import React, { useState } from "react";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsList from "../BurgerIngridientsList/BurgerIngridientsList";
-import propTypes from 'prop-types';
-import {ingridientPropTypes} from '../../utils/proptypes';
+import propTypes from "prop-types";
+import { ingridientPropTypes } from "../../utils/proptypes";
+import burgerIngridientsStyles from "./burger-ingridients.module.css";
 
 function sortIngridients(ingridients) {
-    const bun = [];
-    const main = [];
-    const sauce = [];
-    for (let ingridient of ingridients) {
-        if (ingridient.type === 'bun') {
-            bun.push(ingridient);
-        } else if (ingridient.type === 'main') {
-            main.push(ingridient);
-        } else {
-            sauce.push(ingridient);
-        }
+  const bun = [];
+  const main = [];
+  const sauce = [];
+  for (let ingridient of ingridients) {
+    if (ingridient.type === "bun") {
+      bun.push(ingridient);
+    } else if (ingridient.type === "main") {
+      main.push(ingridient);
+    } else {
+      sauce.push(ingridient);
     }
-    return [bun, main, sauce];
+  }
+  return [bun, main, sauce];
 }
 
-function BurgerIngridients({ingridients, getOpen}) {
+function BurgerIngridients({ ingridients, getOpen }) {
   const [bun, main, sauce] = sortIngridients(ingridients);
 
   const [current, setCurrent] = React.useState("one");
@@ -34,26 +33,34 @@ function BurgerIngridients({ingridients, getOpen}) {
   };
 
   return (
-    <section>
+    <section className={burgerIngridientsStyles.burger}>
       <div className="mt-10 mb-10">
         <p className="text text_type_main-large mb-5">Соберите бургер</p>
-        <div style={{ display: "flex" }} className="mb-10">
-          <Tab value="one" active={current === "one"} onClick={setTab}>
-            Булки
-          </Tab>
-          <Tab value="two" active={current === "two"} onClick={setTab}>
-            Соусы
-          </Tab>
-          <Tab value="three" active={current === "three"} onClick={setTab}>
-            Начинки
-          </Tab>
+        <div className="mb-10">
+          <div className={burgerIngridientsStyles.tabs}>
+            <Tab value="one" active={current === "one"} onClick={setTab}>
+              Булки
+            </Tab>
+            <Tab value="two" active={current === "two"} onClick={setTab}>
+              Соусы
+            </Tab>
+            <Tab value="three" active={current === "three"} onClick={setTab}>
+              Начинки
+            </Tab>
+          </div>
         </div>
-        <p id='one' className="text text_type_main-medium mb-6">Булки</p>
-        {bun && <BurgerIngridientsList list={bun} getOpen={getOpen}/> }
-        <p id='two' className="text text_type_main-medium mb-6">Соусы</p>
-        {sauce && <BurgerIngridientsList list={sauce} getOpen={getOpen}/>}
-        <p id='three' className="text text_type_main-medium mb-6">Начинки</p>
-        {main && <BurgerIngridientsList list={main} getOpen={getOpen}/>}
+        <p id="one" className="text text_type_main-medium mb-6">
+          Булки
+        </p>
+        {bun && <BurgerIngridientsList list={bun} getOpen={getOpen} />}
+        <p id="two" className="text text_type_main-medium mb-6">
+          Соусы
+        </p>
+        {sauce && <BurgerIngridientsList list={sauce} getOpen={getOpen} />}
+        <p id="three" className="text text_type_main-medium mb-6">
+          Начинки
+        </p>
+        {main && <BurgerIngridientsList list={main} getOpen={getOpen} />}
       </div>
     </section>
   );
@@ -61,7 +68,7 @@ function BurgerIngridients({ingridients, getOpen}) {
 
 BurgerIngridients.propTypes = {
   ingridients: propTypes.arrayOf(ingridientPropTypes).isRequired,
-  getOpen: propTypes.func.isRequired
+  getOpen: propTypes.func.isRequired,
 };
 
 export default BurgerIngridients;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import AppHeader from "./components/AppHeader/AppHeader";
-import BurgerConstructor from "./components/BurgerConstructor/BurgerConstructor";
-import BurgerIngridients from "./components/BurgerIngredients/BurgerIngridients";
-import IngridientsDetails from "./components/IngridientsDetails/IngridientsDetails";
-import OrderDetails from "./components/OrderDetails/OrderDetails";
+import AppHeader from "../AppHeader/AppHeader";
+import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import BurgerIngridients from "../BurgerIngredients/BurgerIngridients";
+import IngridientsDetails from "../IngridientsDetails/IngridientsDetails";
+import OrderDetails from "../OrderDetails/OrderDetails";
 import appStyles from "./app.module.css";
-import Modal from "./components/Modal/Modal";
+import Modal from "../Modal/Modal";
 
 const INGRIDIENTSDATA = "https://norma.nomoreparties.space/api/ingredients";
 
@@ -39,14 +39,6 @@ function App() {
     setShowIngridientModal(false);
   };
 
-  const findError = () => {
-    setState({
-      ...state,
-      isLoading: false,
-      hasError: true,
-    });
-  };
-
   const [state, setState] = React.useState({
     isLoading: false,
     hasError: false,
@@ -61,7 +53,6 @@ function App() {
         hasError: false,
       });
 
-      try {
         const request = await fetch(INGRIDIENTSDATA);
         if (request.ok) {
           request
@@ -74,13 +65,9 @@ function App() {
                 data: data.data,
               });
             })
-            .catch((e) => findError());
         } else {
-          findError();
+          return Promise.reject(`Ошибка ${request.status}`);
         }
-      } catch {
-        findError();
-      }
     };
     getIngridientsData();
   }, []);
