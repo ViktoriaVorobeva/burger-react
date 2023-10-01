@@ -39,6 +39,14 @@ function App() {
     setShowIngridientModal(false);
   };
 
+  const handleError = () => {
+    setState({
+      ...state,
+      isLoading: false,
+      hasError: true,
+    });
+  };
+
   const [state, setState] = React.useState({
     isLoading: false,
     hasError: false,
@@ -53,6 +61,7 @@ function App() {
         hasError: false,
       });
 
+      try {
         const request = await fetch(INGRIDIENTSDATA);
         if (request.ok) {
           request
@@ -68,6 +77,9 @@ function App() {
         } else {
           return Promise.reject(`Ошибка ${request.status}`);
         }
+      } catch {
+        handleError();
+      }
     };
     getIngridientsData();
   }, []);
