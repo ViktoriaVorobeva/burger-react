@@ -2,28 +2,21 @@ import React, { useEffect } from "react";
 import modalOverlayStyles from './modal-overlay.module.css';
 import propTypes from 'prop-types';
 
-function ModalOverlay({close}) {
-  const checkKey = (key) => {
-    return key === 27;
-  }
-  
-  const closeESC = (e) => {
-    if (checkKey(e.keyCode)) {
-        close(e);
-    }
-  }
-
+function ModalOverlay({close}) {  
   useEffect(() => {
+    const closeESC = (e) => {
+      if (e.key === 'Escape') {
+          close(e);
+      }
+    }
     document.addEventListener('keydown', closeESC);
-    document.addEventListener('click', close);
     return () => {
       document.removeEventListener('keydown', closeESC);
-      document.removeEventListener('click', close);
     }
   }, []);
 
   return (
-    <div className={modalOverlayStyles.container}></div>
+    <div onClick={close} className={modalOverlayStyles.container}></div>
   );
 }
 

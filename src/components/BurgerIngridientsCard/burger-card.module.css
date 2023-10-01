@@ -8,3 +8,13 @@
 .title {
     text-align: center;
 }
+
+.image_container {
+    position: relative;
+}
+
+.price_container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}

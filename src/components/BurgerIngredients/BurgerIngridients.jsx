@@ -34,7 +34,7 @@ function BurgerIngridients({ingridients, getOpen}) {
   };
 
   return (
-    <section style={{maxWidth: 600, maxHeight: 912, overflow: 'scroll'}}>
+    <section>
       <div className="mt-10 mb-10">
         <p className="text text_type_main-large mb-5">Соберите бургер</p>
         <div style={{ display: "flex" }} className="mb-10">

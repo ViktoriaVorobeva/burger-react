@@ -7,15 +7,13 @@ import propTypes from 'prop-types';
 
 const modalRoot = document.getElementById("react-modals");
 
-function Modal({ children, title, getClose, isOpen }) {
+function Modal({ children, title, getClose }) {
   return ReactDOM.createPortal(
-    <>
-      {isOpen && (
         <>
           <div className={modalStyles.modal}>
             <div className={modalStyles.title}>
               {title && (
-                <p className="text text_type_main-large">Детали ингридиента</p>
+                <p className="text text_type_main-large">{title}</p>
               )}
             </div>
             <div className={modalStyles.button}>
@@ -24,18 +22,15 @@ function Modal({ children, title, getClose, isOpen }) {
             {children}
           </div>
           <ModalOverlay close={getClose} />
-        </>
-      )}
-    </>,
+        </>,
     modalRoot
   );
 }
 
 Modal.propTypes = {
   children: propTypes.element.isRequired,
-  title: propTypes.bool.isRequired,
+  title: propTypes.string,
   getClose: propTypes.func.isRequired,
-  isOpen: propTypes.bool.isRequired
 };
 
 export default Modal;
