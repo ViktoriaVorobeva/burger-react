@@ -33,7 +33,7 @@ function BurgerIngridients({ ingridients, getOpen }) {
   };
 
   return (
-    <section className={burgerIngridientsStyles.burger}>
+    <section>
       <div className="mt-10 mb-10">
         <p className="text text_type_main-large mb-5">Соберите бургер</p>
         <div className="mb-10">
@@ -49,18 +49,20 @@ function BurgerIngridients({ ingridients, getOpen }) {
             </Tab>
           </div>
         </div>
-        <p id="one" className="text text_type_main-medium mb-6">
-          Булки
-        </p>
-        {bun && <BurgerIngridientsList list={bun} getOpen={getOpen} />}
-        <p id="two" className="text text_type_main-medium mb-6">
-          Соусы
-        </p>
-        {sauce && <BurgerIngridientsList list={sauce} getOpen={getOpen} />}
-        <p id="three" className="text text_type_main-medium mb-6">
-          Начинки
-        </p>
-        {main && <BurgerIngridientsList list={main} getOpen={getOpen} />}
+        <div className={burgerIngridientsStyles.burger}>
+          <p id="one" className="text text_type_main-medium mb-6">
+            Булки
+          </p>
+          {bun && <BurgerIngridientsList list={bun} getOpen={getOpen} />}
+          <p id="two" className="text text_type_main-medium mb-6">
+            Соусы
+          </p>
+          {sauce && <BurgerIngridientsList list={sauce} getOpen={getOpen} />}
+          <p id="three" className="text text_type_main-medium mb-6">
+            Начинки
+          </p>
+          {main && <BurgerIngridientsList list={main} getOpen={getOpen} />}
+        </div>
       </div>
     </section>
   );
