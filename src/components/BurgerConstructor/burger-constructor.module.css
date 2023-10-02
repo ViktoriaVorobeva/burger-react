@@ -1,0 +1,29 @@
+.burger {
+    max-width: 600px; 
+    max-height: 912px;
+}
+
+.constructor_list {
+    display: flex;
+    flex-direction: column;
+    gap:  10px;
+    align-items: flex-end; 
+}
+
+.card_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.price_container {
+    display: flex;
+    align-items: center;
+}
