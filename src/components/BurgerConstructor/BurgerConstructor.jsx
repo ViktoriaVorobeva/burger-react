@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import update from 'immutability-helper';
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -13,6 +12,7 @@ import { useDrop } from "react-dnd";
 import {
   addIngridient,
   DELETE_INGRIDIENT,
+  SORT_INGRIDIENT,
 } from "../../services/burgerConstructor/actions";
 import {
   getOrdersData,
@@ -33,24 +33,21 @@ function BurgerConstructor({ getOpen }) {
     (store) => store.burgerConstructor.constructorIngridients
   );
   const bun = useSelector((store) => store.burgerConstructor.bun);
-  const keysConstructor = useSelector((store) => store.burgerConstructor.constructorKeys);
-  const [cards, setCards] = useState(constructor);
 
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    setCards((prevCards) =>
-      update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      }),
-    )
-  }, [])
 
   const dispatch = useDispatch();
 
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    const dragCard = constructor[dragIndex]
+    const newCards = [...constructor];
+    newCards.splice(dragIndex, 1);
+    newCards.splice(hoverIndex, 0, dragCard);
+    dispatch({type: SORT_INGRIDIENT, payload: newCards})
+  }, [dispatch, constructor])
+
   const createOrder = (e) => {
-    return dispatch(getOrdersData(ORDERDATA, constructor, bun, getOpen, e))
+    const order = constructor.map((ingridient) => ingridient.id);
+    return dispatch(getOrdersData(ORDERDATA, order, bun, getOpen, e))
   }
 
   const [{ isOver }, dropTarget] = useDrop(
@@ -71,7 +68,8 @@ function BurgerConstructor({ getOpen }) {
   };
 
   useEffect(() => {
-    let sum = constructor.reduce((acc, item) => {
+    const ids = constructor.map((ingridient) => ingridient.id);
+    let sum = ids.reduce((acc, item) => {
       let element = findIngridient(ingridients, item);
       return acc + element.price;
     }, 0);
@@ -105,18 +103,16 @@ function BurgerConstructor({ getOpen }) {
     />
   );
 
-  const createConstructorElement = (ingridient, idx) => {
-    const element = findIngridient(ingridients, ingridient);
-    const key = keysConstructor[idx];
+  const createConstructorElement = (element, uniqueId, index) => {
     return (
-      <ConstructorIngridient  key={key} index={idx} id={ingridient} moveCard={moveCard}>
+      <ConstructorIngridient  key={uniqueId} index={index} id={uniqueId} moveCard={moveCard}>
         <div className={burgerConstructorStyles.card_container}>
           <DragIcon type="primary" />
           <ConstructorElement
             text={element.name}
             price={element.price}
             thumbnail={element.image}
-            handleClose={() => handleDelete(ingridient)}
+            handleClose={() => handleDelete(uniqueId)}
           />
         </div>
       </ConstructorIngridient>
@@ -164,10 +160,10 @@ function BurgerConstructor({ getOpen }) {
             {bun ? createBunTopElement(bun) : initTopBunConstructor}
             {constructor.length === 0 || (constructor.length === 1 && bun)
               ? initConstructor
-              : constructor.map((item, index) => {
-                  let ingr = findIngridient(ingridients, item);
+              : constructor.map(({id, uniqueId}, index) => {
+                  let ingr = findIngridient(ingridients, id);
                   if (ingr.type !== "bun") {
-                    return createConstructorElement(item, index);
+                    return createConstructorElement(ingr, uniqueId, index);
                   }
                 })}
             {bun ? createBunBottomElement(bun) : initBottomBunConstructor}

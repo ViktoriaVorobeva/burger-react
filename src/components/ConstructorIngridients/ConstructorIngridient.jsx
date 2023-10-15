@@ -5,13 +5,8 @@ import propTypes from 'prop-types';
 
   export const ConstructorIngridient = ({ id, index, moveCard, children }) => {
     const ref = useRef(null)
-    const [{ handlerId }, drop] = useDrop({
-      accept: 'ingridient',
-      collect(monitor) {
-        return {
-          handlerId: monitor.getHandlerId(),
-        }
-      },
+    const [, drop] = useDrop({
+      accept: 'ingridient-card',
       hover(item, monitor) {
         if (!ref.current) {
           return
@@ -38,7 +33,7 @@ import propTypes from 'prop-types';
     })
 
     const [{ isDragging }, drag] = useDrag({
-      type: 'ingridient',
+      type: 'ingridient-card',
       item: () => {
         return { id, index }
       },
@@ -52,7 +47,7 @@ import propTypes from 'prop-types';
     drag(drop(ref))
 
     return (
-      <div className={constructorIngridient.container} ref={ref} style={{opacity }} data-handler-id={handlerId}>
+      <div className={constructorIngridient.container} ref={ref} style={{opacity }}>
         {children}
       </div>
     )
