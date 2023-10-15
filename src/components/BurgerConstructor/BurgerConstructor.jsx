@@ -11,19 +11,16 @@ import propTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
-  ADD_INGRIDIENT,
+  addIngridient,
   DELETE_INGRIDIENT,
-  CLEAR_CONSTRUCTOR,
 } from "../../services/burgerConstructor/actions";
 import {
-  GET_ORDER__REQUEST,
-  GET_ORDER__SUCCESS,
-  GET_ORDER__FAILURE,
+  getOrdersData,
 } from "../../services/orderDetails/actions";
-import { nanoid } from "nanoid";
 import { ConstructorIngridient } from "../ConstructorIngridients/ConstructorIngridient";
+import { BASE_URL } from "../../utils/url";
 
-const ORDERDATA = "https://norma.nomoreparties.space/api/orders";
+const ORDERDATA = `${BASE_URL}/orders`;
 
 function findIngridient(ingridients, id) {
   return ingridients.find((el) => el._id === id);
@@ -36,6 +33,7 @@ function BurgerConstructor({ getOpen }) {
     (store) => store.burgerConstructor.constructorIngridients
   );
   const bun = useSelector((store) => store.burgerConstructor.bun);
+  const keysConstructor = useSelector((store) => store.burgerConstructor.constructorKeys);
   const [cards, setCards] = useState(constructor);
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {
@@ -51,49 +49,15 @@ function BurgerConstructor({ getOpen }) {
 
   const dispatch = useDispatch();
 
-  const getOrdersData = async (event) => {
-    if (bun) {
-      dispatch({
-        type: GET_ORDER__REQUEST,
-      });
-
-      try {
-        const request = await fetch(ORDERDATA, {
-          method: "POST",
-          body: JSON.stringify({ ingredients: constructor.concat(bun) }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        });
-        if (request.ok) {
-          request.json().then((data) => {
-            dispatch({
-              type: GET_ORDER__SUCCESS,
-              payload: data.order.number,
-            });
-            dispatch({
-              type: CLEAR_CONSTRUCTOR,
-            });
-            getOpen(event);
-          });
-        } else {
-          dispatch({
-            type: GET_ORDER__FAILURE,
-          });
-        }
-      } catch {
-        dispatch({
-          type: GET_ORDER__FAILURE,
-        });
-      }
-    }
-  };
+  const createOrder = (e) => {
+    return dispatch(getOrdersData(ORDERDATA, constructor, bun, getOpen, e))
+  }
 
   const [{ isOver }, dropTarget] = useDrop(
     () => ({
       accept: "ingridient",
       drop: (item) => {
-          dispatch({ type: ADD_INGRIDIENT, payload: item });
+          dispatch(addIngridient(item));
       },
       collect: (monitor) => ({
         isOver: monitor.isOver(),
@@ -143,7 +107,7 @@ function BurgerConstructor({ getOpen }) {
 
   const createConstructorElement = (ingridient, idx) => {
     const element = findIngridient(ingridients, ingridient);
-    const key = nanoid();
+    const key = keysConstructor[idx];
     return (
       <ConstructorIngridient  key={key} index={idx} id={ingridient} moveCard={moveCard}>
         <div className={burgerConstructorStyles.card_container}>
@@ -162,7 +126,7 @@ function BurgerConstructor({ getOpen }) {
   const createBunTopElement = (ingridient) => {
     const element = findIngridient(ingridients, ingridient);
     return (
-      <div key={nanoid()}>
+      <div>
         <ConstructorElement
           type="top"
           isLocked={true}
@@ -177,7 +141,7 @@ function BurgerConstructor({ getOpen }) {
   const createBunBottomElement = (ingridient) => {
     const element = findIngridient(ingridients, ingridient);
     return (
-      <div key={nanoid()}>
+      <div>
         <ConstructorElement
           type="bottom"
           isLocked={true}
@@ -202,11 +166,8 @@ function BurgerConstructor({ getOpen }) {
               ? initConstructor
               : constructor.map((item, index) => {
                   let ingr = findIngridient(ingridients, item);
-                  let decrement = 0;
                   if (ingr.type !== "bun") {
-                    return createConstructorElement(item, index - decrement);
-                  } else {
-                    decrement++;
+                    return createConstructorElement(item, index);
                   }
                 })}
             {bun ? createBunBottomElement(bun) : initBottomBunConstructor}
@@ -220,7 +181,7 @@ function BurgerConstructor({ getOpen }) {
             </div>
           </div>
           <Button
-            onClick={getOrdersData}
+            onClick={(event) => createOrder(event)}
             htmlType="button"
             type="primary"
             size="large"

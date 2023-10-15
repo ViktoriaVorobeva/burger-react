@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from "react";
 import { useDrag, useDrop } from 'react-dnd'
-import { useRef } from 'react'
+import React, { useRef } from 'react'
 import constructorIngridient from "./constructor-ingridients.module.css";
+import propTypes from 'prop-types';
 
   export const ConstructorIngridient = ({ id, index, moveCard, children }) => {
     const ref = useRef(null)
@@ -57,3 +57,10 @@ import constructorIngridient from "./constructor-ingridients.module.css";
       </div>
     )
   }
+
+  ConstructorIngridient.propTypes = {
+    id: propTypes.string.isRequired,
+    index: propTypes.number.isRequired, 
+    moveCard: propTypes.func.isRequired,
+    children: propTypes.element.isRequired,
+  };

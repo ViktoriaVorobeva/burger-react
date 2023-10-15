@@ -7,15 +7,12 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import appStyles from "./app.module.css";
 import Modal from "../Modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  GET_INGRIDIENTS__FAILURE,
-  GET_INGRIDIENTS__REQUEST,
-  GET_INGRIDIENTS__SUCCESS,
-} from "../../services/ingridients/actions";
+import { getIngridientsData } from "../../services/ingridients/actions";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BASE_URL } from "../../utils/url";
 
-const INGRIDIENTSDATA = "https://norma.nomoreparties.space/api/ingredients";
+const INGRIDIENTSDATA = `${BASE_URL}/ingredients`;
 
 function findIngridient(ingridients, id) {
   return ingridients.find((el) => el._id === id);
@@ -50,32 +47,7 @@ function App() {
   };
 
   useEffect(() => {
-    const getIngridientsData = async () => {
-      dispatch({
-        type: GET_INGRIDIENTS__REQUEST,
-      });
-
-      try {
-        const request = await fetch(INGRIDIENTSDATA);
-        if (request.ok) {
-          request.json().then((data) => {
-            dispatch({
-              type: GET_INGRIDIENTS__SUCCESS,
-              payload: data.data,
-            });
-          });
-        } else {
-          dispatch({
-            type: GET_INGRIDIENTS__FAILURE,
-          });
-        }
-      } catch {
-        dispatch({
-          type: GET_INGRIDIENTS__FAILURE,
-        });
-      }
-    };
-    getIngridientsData();
+    dispatch(getIngridientsData(INGRIDIENTSDATA));
   }, [dispatch]);
 
   const { isLoading, errors, ingridients } = useSelector(
