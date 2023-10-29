@@ -4,10 +4,25 @@ import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import ReactDOM, { createPortal } from "react-dom";
 import modalStyles from "./modal.module.css";
 import propTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
 
 const modalRoot = document.getElementById("react-modals");
 
-function Modal({ children, title, getClose }) {
+function Modal({ children, title }) {
+  let navigate = useNavigate();
+  function onDismiss() {
+    navigate(-1);
+  }
+
+  React.useEffect(() => {
+    const closeByEsc = ((e) => {
+      if (e.key === 'Escape') {
+        onDismiss()
+      }
+    });
+    document.addEventListener('keydown', closeByEsc);
+    return () => document.removeEventListener('keydown', closeByEsc)
+  }, [onDismiss]);
   return ReactDOM.createPortal(
         <>
           <div className={modalStyles.modal}>
@@ -17,11 +32,11 @@ function Modal({ children, title, getClose }) {
               )}
             </div>
             <div className={modalStyles.button}>
-              <CloseIcon onClick={getClose} type="primary" />
+              <CloseIcon onClick={onDismiss} type="primary" />
             </div>
             {children}
           </div>
-          <ModalOverlay close={getClose} />
+          <ModalOverlay close={onDismiss} />
         </>,
     modalRoot
   );
@@ -30,7 +45,6 @@ function Modal({ children, title, getClose }) {
 Modal.propTypes = {
   children: propTypes.element.isRequired,
   title: propTypes.string,
-  getClose: propTypes.func.isRequired,
 };
 
 export default Modal;

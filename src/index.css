@@ -33,3 +33,27 @@ code {
   margin: 0 auto;
   padding: 0 50px;
 }
+
+.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.active p {
+  color: #f2f2f3;
+}
+
+.non-active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.non-active p {
+  color: #8585ad;
+}

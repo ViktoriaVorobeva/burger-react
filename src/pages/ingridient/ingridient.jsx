@@ -1,19 +1,28 @@
 import React, { useEffect } from "react";
-import ingridientsDetailsStyles from "./ingridients-details.module.css";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import ingridientsDetailsStyles from "./ingridient.module.css";
+import { BASE_URL } from "../../utils/url";
+import { getIngridientsData } from "../../services/ingridients/actions";
+
+const INGRIDIENTSDATA = `${BASE_URL}/ingredients`;
 
 function findIngridient(ingridients, id) {
   return ingridients.find((el) => el._id === id);
 }
 
-function IngridientsDetails() {
+export function IngridientPage() {
   const { ingridients } = useSelector(
     (state) => state.ingridients
   );
-  const { id } = useParams();
-
+  const dispatch = useDispatch();
+  let { id } = useParams();
   const ingridient = findIngridient(ingridients, id);
+
+  useEffect(() => {
+    dispatch(getIngridientsData(INGRIDIENTSDATA));
+  }, [dispatch]);
+
   return (
     <>
       {ingridient && (
@@ -81,5 +90,3 @@ function IngridientsDetails() {
     </>
   );
 }
-
-export default IngridientsDetails;

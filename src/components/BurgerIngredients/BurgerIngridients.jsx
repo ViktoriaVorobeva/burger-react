@@ -22,7 +22,7 @@ function sortIngridients(ingridients) {
   return [bun, main, sauce];
 }
 
-function BurgerIngridients({ getOpen }) {
+function BurgerIngridients() {
   const ingridients = useSelector((state) => state.ingridients.ingridients);
   const [bun, main, sauce] = sortIngridients(ingridients);
 
@@ -89,23 +89,19 @@ function BurgerIngridients({ getOpen }) {
           <p id="one" className="text text_type_main-medium mb-6" ref={bunRef}>
             Булки
           </p>
-          {bun && <BurgerIngridientsList list={bun} getOpen={getOpen} />}
+          {bun && <BurgerIngridientsList list={bun}  />}
           <p id="two" className="text text_type_main-medium mb-6" ref={sauceRef}>
             Соусы
           </p>
-          {sauce && <BurgerIngridientsList list={sauce} getOpen={getOpen} />}
+          {sauce && <BurgerIngridientsList list={sauce}  />}
           <p id="three" className="text text_type_main-medium mb-6" ref={mainRef}>
             Начинки
           </p>
-          {main && <BurgerIngridientsList list={main} getOpen={getOpen} />}
+          {main && <BurgerIngridientsList list={main}  />}
         </div>
       </div>
     </section>
   );
 }
-
-BurgerIngridients.propTypes = {
-  getOpen: propTypes.func.isRequired,
-};
 
 export default BurgerIngridients;

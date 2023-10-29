@@ -47,7 +47,7 @@ function BurgerConstructor({ getOpen }) {
 
   const createOrder = (e) => {
     const order = constructor.map((ingridient) => ingridient.id);
-    return dispatch(getOrdersData(ORDERDATA, order, bun, getOpen, e))
+    return dispatch(getOrdersData(ORDERDATA, order, bun, getOpen, e));
   }
 
   const [{ isOver }, dropTarget] = useDrop(

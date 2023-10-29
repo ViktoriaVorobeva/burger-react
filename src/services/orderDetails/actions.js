@@ -1,6 +1,7 @@
 import {
     request
 } from "../../utils/checkResponse";
+import { getCookie } from "../../utils/cookie";
 import {
     CLEAR_CONSTRUCTOR
 } from "../burgerConstructor/actions";
@@ -22,6 +23,7 @@ export const getOrdersData = (url, constructor, bun, getOpen, event) => {
                     }),
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
+                        "Authorization": 'Bearer ' + getCookie('token')
                     },
                 })
                 .then((data) => {
