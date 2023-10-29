@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsList from "../BurgerIngridientsList/BurgerIngridientsList";
 import propTypes from "prop-types";
-import { ingridientPropTypes } from "../../utils/proptypes";
 import burgerIngridientsStyles from "./burger-ingridients.module.css";
+import { useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
 
 function sortIngridients(ingridients) {
   const bun = [];
@@ -21,8 +22,19 @@ function sortIngridients(ingridients) {
   return [bun, main, sauce];
 }
 
-function BurgerIngridients({ ingridients, getOpen }) {
+function BurgerIngridients({ getOpen }) {
+  const ingridients = useSelector((state) => state.ingridients.ingridients);
   const [bun, main, sauce] = sortIngridients(ingridients);
+
+  const [bunRef, bunInView] = useInView({
+    threshold: 0,
+  });
+  const [mainRef, mainInView] = useInView({
+    threshold: 0,
+  });
+  const [sauceRef, sauceInView] = useInView({
+    threshold: 0,
+  });
 
   const [current, setCurrent] = React.useState("one");
 
@@ -32,6 +44,24 @@ function BurgerIngridients({ ingridients, getOpen }) {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
+  useEffect(() => {
+    if (bunInView) {
+      setCurrent("one");
+    }
+  }, [bunInView]);
+
+  useEffect(() => {
+    if (sauceInView) {
+      setCurrent("two");
+    }
+  }, [sauceInView]);
+
+  useEffect(() => {
+    if (mainInView) {
+      setCurrent("three");
+    }
+  }, [mainInView]);
+
   return (
     <section>
       <div className="mt-10 mb-10">
@@ -39,26 +69,32 @@ function BurgerIngridients({ ingridients, getOpen }) {
         <div className="mb-10">
           <div className={burgerIngridientsStyles.tabs}>
             <Tab value="one" active={current === "one"} onClick={setTab}>
-              Булки
+              <p className="text text_type_main-default">
+                Булки
+              </p>
             </Tab>
             <Tab value="two" active={current === "two"} onClick={setTab}>
-              Соусы
+              <p className="text text_type_main-default">
+                Соусы
+              </p>
             </Tab>
             <Tab value="three" active={current === "three"} onClick={setTab}>
-              Начинки
+              <p className="text text_type_main-default">
+                Начинки
+              </p>
             </Tab>
           </div>
         </div>
         <div className={burgerIngridientsStyles.burger}>
-          <p id="one" className="text text_type_main-medium mb-6">
+          <p id="one" className="text text_type_main-medium mb-6" ref={bunRef}>
             Булки
           </p>
           {bun && <BurgerIngridientsList list={bun} getOpen={getOpen} />}
-          <p id="two" className="text text_type_main-medium mb-6">
+          <p id="two" className="text text_type_main-medium mb-6" ref={sauceRef}>
             Соусы
           </p>
           {sauce && <BurgerIngridientsList list={sauce} getOpen={getOpen} />}
-          <p id="three" className="text text_type_main-medium mb-6">
+          <p id="three" className="text text_type_main-medium mb-6" ref={mainRef}>
             Начинки
           </p>
           {main && <BurgerIngridientsList list={main} getOpen={getOpen} />}
@@ -69,7 +105,6 @@ function BurgerIngridients({ ingridients, getOpen }) {
 }
 
 BurgerIngridients.propTypes = {
-  ingridients: propTypes.arrayOf(ingridientPropTypes).isRequired,
   getOpen: propTypes.func.isRequired,
 };
 

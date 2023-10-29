@@ -6,8 +6,13 @@ import IngridientsDetails from "../IngridientsDetails/IngridientsDetails";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import appStyles from "./app.module.css";
 import Modal from "../Modal/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngridientsData } from "../../services/ingridients/actions";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { BASE_URL } from "../../utils/url";
 
-const INGRIDIENTSDATA = "https://norma.nomoreparties.space/api/ingredients";
+const INGRIDIENTSDATA = `${BASE_URL}/ingredients`;
 
 function findIngridient(ingridients, id) {
   return ingridients.find((el) => el._id === id);
@@ -17,6 +22,8 @@ function App() {
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [showIngridientModal, setShowIngridientModal] = useState(false);
   const [ingridient, updateIngridient] = useState();
+
+  const dispatch = useDispatch();
 
   const openOrderModal = (e) => {
     e.stopPropagation();
@@ -31,7 +38,7 @@ function App() {
   const openIngridientModal = (e, key) => {
     e.stopPropagation();
     setShowIngridientModal(true);
-    updateIngridient(findIngridient(data, key));
+    updateIngridient(findIngridient(ingridients, key));
   };
 
   const closeIngridientModal = (e) => {
@@ -39,68 +46,28 @@ function App() {
     setShowIngridientModal(false);
   };
 
-  const handleError = () => {
-    setState({
-      ...state,
-      isLoading: false,
-      hasError: true,
-    });
-  };
+  useEffect(() => {
+    dispatch(getIngridientsData(INGRIDIENTSDATA));
+  }, [dispatch]);
 
-  const [state, setState] = React.useState({
-    isLoading: false,
-    hasError: false,
-    data: [],
-  });
-
-  React.useEffect(() => {
-    const getIngridientsData = async () => {
-      setState({
-        ...state,
-        isLoading: true,
-        hasError: false,
-      });
-
-      try {
-        const request = await fetch(INGRIDIENTSDATA);
-        if (request.ok) {
-          request
-            .json()
-            .then((data) => {
-              setState({
-                ...state,
-                isLoading: false,
-                hasError: false,
-                data: data.data,
-              });
-            })
-        } else {
-          return Promise.reject(`Ошибка ${request.status}`);
-        }
-      } catch {
-        handleError();
-      }
-    };
-    getIngridientsData();
-  }, []);
-
-  const { isLoading, hasError, data } = state;
+  const { isLoading, errors, ingridients } = useSelector(
+    (state) => state.ingridients
+  );
 
   return (
     <>
       <div>
         {isLoading && "Загрузка..."}
-        {hasError && "Произошла ошибка"}
-        {!isLoading && !hasError && (
+        {errors && "Произошла ошибка"}
+        {!isLoading && !errors && (
           <>
             <AppHeader />
             <main className="container">
               <div className={appStyles.main_wrapper}>
-                <BurgerIngridients
-                  ingridients={data}
-                  getOpen={openIngridientModal}
-                />
-                <BurgerConstructor getOpen={openOrderModal} />
+                <DndProvider backend={HTML5Backend}>
+                  <BurgerIngridients getOpen={openIngridientModal} />
+                  <BurgerConstructor getOpen={openOrderModal} />
+                </DndProvider>
               </div>
             </main>
           </>
