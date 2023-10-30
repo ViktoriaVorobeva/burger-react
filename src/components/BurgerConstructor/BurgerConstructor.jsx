@@ -14,13 +14,9 @@ import {
   DELETE_INGRIDIENT,
   SORT_INGRIDIENT,
 } from "../../services/burgerConstructor/actions";
-import {
-  getOrdersData,
-} from "../../services/orderDetails/actions";
+import { getOrdersData } from "../../services/orderDetails/actions";
 import { ConstructorIngridient } from "../ConstructorIngridients/ConstructorIngridient";
-import { BASE_URL } from "../../utils/url";
-
-const ORDERDATA = `${BASE_URL}/orders`;
+import { useNavigate } from "react-router-dom";
 
 function findIngridient(ingridients, id) {
   return ingridients.find((el) => el._id === id);
@@ -33,28 +29,37 @@ function BurgerConstructor({ getOpen }) {
     (store) => store.burgerConstructor.constructorIngridients
   );
   const bun = useSelector((store) => store.burgerConstructor.bun);
-
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.register);
 
   const dispatch = useDispatch();
 
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    const dragCard = constructor[dragIndex]
-    const newCards = [...constructor];
-    newCards.splice(dragIndex, 1);
-    newCards.splice(hoverIndex, 0, dragCard);
-    dispatch({type: SORT_INGRIDIENT, payload: newCards})
-  }, [dispatch, constructor])
+  const moveCard = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragCard = constructor[dragIndex];
+      const newCards = [...constructor];
+      newCards.splice(dragIndex, 1);
+      newCards.splice(hoverIndex, 0, dragCard);
+      dispatch({ type: SORT_INGRIDIENT, payload: newCards });
+    },
+    [dispatch, constructor]
+  );
 
-  const createOrder = (e) => {
-    const order = constructor.map((ingridient) => ingridient.id);
-    return dispatch(getOrdersData(ORDERDATA, order, bun, getOpen, e))
-  }
+  const createOrder = () => {
+    if (!user) {
+      navigate("/login?retpath=/");
+    } else {
+      getOpen(true);
+      const order = constructor.map((ingridient) => ingridient.id);
+      return dispatch(getOrdersData(order, bun));
+    }
+  };
 
-  const [{ isOver }, dropTarget] = useDrop(
+  const [, dropTarget] = useDrop(
     () => ({
       accept: "ingridient",
       drop: (item) => {
-          dispatch(addIngridient(item));
+        dispatch(addIngridient(item));
       },
       collect: (monitor) => ({
         isOver: monitor.isOver(),
@@ -105,7 +110,12 @@ function BurgerConstructor({ getOpen }) {
 
   const createConstructorElement = (element, uniqueId, index) => {
     return (
-      <ConstructorIngridient  key={uniqueId} index={index} id={uniqueId} moveCard={moveCard}>
+      <ConstructorIngridient
+        key={uniqueId}
+        index={index}
+        id={uniqueId}
+        moveCard={moveCard}
+      >
         <div className={burgerConstructorStyles.card_container}>
           <DragIcon type="primary" />
           <ConstructorElement
@@ -160,7 +170,7 @@ function BurgerConstructor({ getOpen }) {
             {bun ? createBunTopElement(bun) : initTopBunConstructor}
             {constructor.length === 0 || (constructor.length === 1 && bun)
               ? initConstructor
-              : constructor.map(({id, uniqueId}, index) => {
+              : constructor.map(({ id, uniqueId }, index) => {
                   let ingr = findIngridient(ingridients, id);
                   if (ingr.type !== "bun") {
                     return createConstructorElement(ingr, uniqueId, index);
@@ -176,14 +186,16 @@ function BurgerConstructor({ getOpen }) {
               <CurrencyIcon type="primary" />
             </div>
           </div>
-          <Button
-            onClick={(event) => createOrder(event)}
-            htmlType="button"
-            type="primary"
-            size="large"
-          >
-            Оформить заказ
-          </Button>
+          {constructor.length > 0 && bun && (
+            <Button
+              onClick={(event) => createOrder(event)}
+              htmlType="button"
+              type="primary"
+              size="large"
+            >
+              Оформить заказ
+            </Button>
+          )}
         </div>
       </div>
     </section>

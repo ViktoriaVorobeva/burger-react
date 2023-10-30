@@ -8,12 +8,14 @@ import propTypes from "prop-types";
 import { ingridientPropTypes } from "../../utils/proptypes";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 
-function BurgerIngridientsCard({ card, id, getOpen }) {
+function BurgerIngridientsCard({ card, id }) {
+  let location = useLocation();
   const constructor = useSelector(
     (store) => store.burgerConstructor.constructorIngridients
   );
-  
+
   const [count, setCount] = useState(null);
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
@@ -40,25 +42,26 @@ function BurgerIngridientsCard({ card, id, getOpen }) {
 
   return (
     <li
-      className={burgerCardStyles.card}
-      onClick={(e) => getOpen(e, id)}
       ref={dragRef}
     >
-      <div className="mb-1">
-        <div className={burgerCardStyles.image_container}>
-          <img src={card.image} alt={card.name} />
-          {count && <Counter count={count} size="default" extraClass="m-1" />}
+      <Link className={burgerCardStyles.card} to={`/ingredients/${id}`}
+            state={{ backgroundLocation: location }}>
+        <div className="mb-1">
+          <div className={burgerCardStyles.image_container}>
+            <img src={card.image} alt={card.name} />
+            {count && <Counter count={count} size="default" extraClass="m-1" />}
+          </div>
         </div>
-      </div>
-      <div className="mb-1">
-        <div className={burgerCardStyles.price_container}>
-          <p className="text text_type_digits-default mr-2">{card.price}</p>
-          <CurrencyIcon type="primary" />
+        <div className="mb-1">
+          <div className={burgerCardStyles.price_container}>
+            <p className="text text_type_digits-default mr-2">{card.price}</p>
+            <CurrencyIcon type="primary" />
+          </div>
         </div>
-      </div>
-      <div className={burgerCardStyles.title}>
-        <p className="text text_type_main-small">{card.name}</p>
-      </div>
+        <div className={burgerCardStyles.title}>
+          <p className="text text_type_main-small">{card.name}</p>
+        </div>
+      </Link>
     </li>
   );
 }
@@ -66,7 +69,6 @@ function BurgerIngridientsCard({ card, id, getOpen }) {
 BurgerIngridientsCard.propTypes = {
   card: ingridientPropTypes,
   id: propTypes.string.isRequired,
-  getOpen: propTypes.func.isRequired,
 };
 
 export default BurgerIngridientsCard;

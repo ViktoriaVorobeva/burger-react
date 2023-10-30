@@ -1,87 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import HomePage from "../../pages/home/home";
+import { LoginPage } from "../../pages/login/login";
+import { RegisterPage } from "../../pages/register/register";
+import { ForgotPage } from "../../pages/forgotPassword/forgot";
+import { ResetPage } from "../../pages/resetPassword/reset";
+import { IngridientPage } from "../../pages/ingridient/ingridient";
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import BurgerIngridients from "../BurgerIngredients/BurgerIngridients";
+import { ProfilePage } from "../../pages/profile/profile";
+import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 import IngridientsDetails from "../IngridientsDetails/IngridientsDetails";
-import OrderDetails from "../OrderDetails/OrderDetails";
-import appStyles from "./app.module.css";
 import Modal from "../Modal/Modal";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getIngridientsData } from "../../services/ingridients/actions";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { BASE_URL } from "../../utils/url";
-
-const INGRIDIENTSDATA = `${BASE_URL}/ingredients`;
-
-function findIngridient(ingridients, id) {
-  return ingridients.find((el) => el._id === id);
-}
+import { GET_REGISTER__FAILURE, GET_REGISTER__REQUEST, GET_REGISTER__SUCCESS } from "../../services/registers/actions";
+import { fetchWithRefresh } from "../../utils/fetchWithRefresh";
 
 function App() {
-  const [showOrderModal, setShowOrderModal] = useState(false);
-  const [showIngridientModal, setShowIngridientModal] = useState(false);
-  const [ingridient, updateIngridient] = useState();
-
+  let location = useLocation();
   const dispatch = useDispatch();
-
-  const openOrderModal = (e) => {
-    e.stopPropagation();
-    setShowOrderModal(true);
-  };
-
-  const closeOrderModal = (e) => {
-    e.stopPropagation();
-    setShowOrderModal(false);
-  };
-
-  const openIngridientModal = (e, key) => {
-    e.stopPropagation();
-    setShowIngridientModal(true);
-    updateIngridient(findIngridient(ingridients, key));
-  };
-
-  const closeIngridientModal = (e) => {
-    e.stopPropagation();
-    setShowIngridientModal(false);
-  };
-
+  const background = location.state && location.state.backgroundLocation;
   useEffect(() => {
-    dispatch(getIngridientsData(INGRIDIENTSDATA));
+    dispatch(getIngridientsData());
   }, [dispatch]);
 
-  const { isLoading, errors, ingridients } = useSelector(
-    (state) => state.ingridients
-  );
-
+  useEffect(() => {
+    dispatch({
+      type: GET_REGISTER__REQUEST,
+  });
+  fetchWithRefresh()
+    .then((data) => {
+      dispatch({
+          type: GET_REGISTER__SUCCESS,
+          payload: data.user,
+      });
+  })
+  .catch(() => {
+      dispatch({
+          type: GET_REGISTER__FAILURE,
+      })
+  })
+  }, [dispatch]);
+  
   return (
     <>
-      <div>
-        {isLoading && "Загрузка..."}
-        {errors && "Произошла ошибка"}
-        {!isLoading && !errors && (
-          <>
-            <AppHeader />
-            <main className="container">
-              <div className={appStyles.main_wrapper}>
-                <DndProvider backend={HTML5Backend}>
-                  <BurgerIngridients getOpen={openIngridientModal} />
-                  <BurgerConstructor getOpen={openOrderModal} />
-                </DndProvider>
-              </div>
-            </main>
-          </>
-        )}
-      </div>
-      {showOrderModal && (
-        <Modal getClose={closeOrderModal}>
-          <OrderDetails />
-        </Modal>
-      )}
-      {showIngridientModal && (
-        <Modal title="Детали ингридиента" getClose={closeIngridientModal}>
-          <IngridientsDetails ingridient={ingridient} />
-        </Modal>
+      <AppHeader />
+      <Routes location={background || location}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<ProtectedRouteElement onlyUnAuth={true}><LoginPage /></ProtectedRouteElement>} />
+        <Route path="/register" element={<ProtectedRouteElement onlyUnAuth={true}><RegisterPage /></ProtectedRouteElement>} />
+        <Route path="/forgot-password" element={<ProtectedRouteElement onlyUnAuth={true}><ForgotPage /></ProtectedRouteElement>} />
+        <Route path="/reset-password" element={<ProtectedRouteElement onlyUnAuth={true}><ResetPage /></ProtectedRouteElement>} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRouteElement>
+              <ProfilePage />
+            </ProtectedRouteElement>
+          }
+        />
+        <Route path="/ingredients/:id" element={<IngridientPage />} />
+      </Routes>
+      {!!background && (
+        <Routes>
+          <Route
+            path="/ingredients/:id"
+            element={
+                <Modal
+                  title="Детали ингридиента"
+                >
+                  <IngridientsDetails />
+                </Modal>
+            }
+          ></Route>
+        </Routes>
       )}
     </>
   );
