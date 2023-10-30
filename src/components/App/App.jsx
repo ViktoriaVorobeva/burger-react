@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import HomePage from "../../pages/home/home";
 import { LoginPage } from "../../pages/login/login";
@@ -11,20 +11,46 @@ import { ProfilePage } from "../../pages/profile/profile";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 import IngridientsDetails from "../IngridientsDetails/IngridientsDetails";
 import Modal from "../Modal/Modal";
+import { useDispatch } from "react-redux";
+import { getIngridientsData } from "../../services/ingridients/actions";
+import { GET_REGISTER__FAILURE, GET_REGISTER__REQUEST, GET_REGISTER__SUCCESS } from "../../services/registers/actions";
+import { fetchWithRefresh } from "../../utils/fetchWithRefresh";
 
 function App() {
   let location = useLocation();
+  const dispatch = useDispatch();
   const background = location.state && location.state.backgroundLocation;
+  useEffect(() => {
+    dispatch(getIngridientsData());
+  }, [dispatch]);
 
+  useEffect(() => {
+    dispatch({
+      type: GET_REGISTER__REQUEST,
+  });
+  fetchWithRefresh()
+    .then((data) => {
+      dispatch({
+          type: GET_REGISTER__SUCCESS,
+          payload: data.user,
+      });
+  })
+  .catch(() => {
+      dispatch({
+          type: GET_REGISTER__FAILURE,
+      })
+  })
+  }, [dispatch]);
+  
   return (
     <>
       <AppHeader />
       <Routes location={background || location}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPage />} />
-        <Route path="/reset-password" element={<ResetPage />} />
+        <Route path="/login" element={<ProtectedRouteElement onlyUnAuth={true}><LoginPage /></ProtectedRouteElement>} />
+        <Route path="/register" element={<ProtectedRouteElement onlyUnAuth={true}><RegisterPage /></ProtectedRouteElement>} />
+        <Route path="/forgot-password" element={<ProtectedRouteElement onlyUnAuth={true}><ForgotPage /></ProtectedRouteElement>} />
+        <Route path="/reset-password" element={<ProtectedRouteElement onlyUnAuth={true}><ResetPage /></ProtectedRouteElement>} />
         <Route
           path="/profile"
           element={

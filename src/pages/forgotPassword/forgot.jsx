@@ -1,20 +1,16 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot.module.css";
-import { BASE_URL } from "../../utils/url";
-import { Link, Navigate, useNavigate} from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate} from 'react-router-dom';
+import { useDispatch } from "react-redux";
 import { getPasswordForgot } from "../../services/passwordForgot/actions";
-
-const FORGOTPASSWORDDATA = `${BASE_URL}/password-reset`
 
 export function ForgotPage() {
   const [value, setValue] = React.useState("");
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.register);
   const onChange = (e) => {
     setValue(e.target.value);
   };
@@ -22,16 +18,10 @@ export function ForgotPage() {
   let forgot = 
   e => {
     e.preventDefault();
-    dispatch(getPasswordForgot(FORGOTPASSWORDDATA, value));
+    dispatch(getPasswordForgot(value));
     navigate('/reset-password', {replace: true});
   };
 
-  useEffect(() => {
-    if (user) {
-        <Navigate
-          to={'/'}
-        />
-  }}, [user]);
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>

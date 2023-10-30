@@ -5,25 +5,41 @@ import {
     request
 } from './checkResponse'
 import {
+    getCookie,
     setCookie
 } from './cookie';
+import { BASE_URL } from './url';
+import { urls } from './urls';
 
+const USERDATA = `${BASE_URL}${urls.user}`;
 
-export const fetchWithRefresh = async (url, options) => {
+const options = {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      "Authorization": 'Bearer ' + getCookie('token')
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer'
+}
+
+export const fetchWithRefresh = async () => {
     try {
-        return await fetch(url, options).then((res) => res.ok
+        return await fetch(USERDATA, options).then((res) => res.ok
         ? (res.json())
         : res.json().then(error => Promise.reject(error)))
         .catch(error => Promise.reject(error))
     } catch (error) {
-        if (error.message === "jwt expired") {
-            const refreshData = await getRefreshRequest('https://norma.nomoreparties.space/api/auth/token');
+        if (error.message === "jwt expired" && localStorage.getItem('token')) {
+            const refreshData = await getRefreshRequest();
             if (!refreshData.success) {
                 Promise.reject(refreshData);
             }
             setCookie("accessToken", refreshData.accessToken);
             localStorage.setItem('token', refreshData.refreshToken)
-            return await request(url, options);
+            return await request(USERDATA, options);
         }
     }
 }

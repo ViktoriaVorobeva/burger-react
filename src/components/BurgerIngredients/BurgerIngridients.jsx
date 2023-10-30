@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsList from "../BurgerIngridientsList/BurgerIngridientsList";
-import propTypes from "prop-types";
 import burgerIngridientsStyles from "./burger-ingridients.module.css";
 import { useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";

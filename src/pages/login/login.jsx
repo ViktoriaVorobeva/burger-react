@@ -1,20 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from "./login.module.css";
-import { getRegister } from "../../services/registers/actions";
-import { BASE_URL } from "../../utils/url";
-import { useDispatch, useSelector } from "react-redux";
+import { getLogin } from "../../services/registers/actions";
+import { useDispatch } from "react-redux";
 
-const LOGINDATA = `${BASE_URL}/auth/login`;
 
 export function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {user} = useSelector(state => state.register);
   const [form, setValue] = useState({ email: '', password: '' });
 
   const onChange = e => {
@@ -24,21 +21,14 @@ export function LoginPage() {
   let login = 
     e => {
       e.preventDefault();
-      dispatch(getRegister(LOGINDATA, form));
+      dispatch(getLogin(form));
       navigate('/', {replace: true});
     };
-
-    useEffect(() => {
-      if (user) {
-          <Navigate
-            to={'/'}
-          />
-    }}, [user]);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form onSubmit={login} className={styles.form}>
           <h1 className='mb-6'>Вход</h1>
           <Input
             type={"email"}
@@ -62,7 +52,7 @@ export function LoginPage() {
             size={"default"}
             extraClass="mb-6"
           />
-          <Button onClick={login} extraClass='mb-20' htmlType="submit" type="primary" size="large">
+          <Button extraClass='mb-20' htmlType="submit" type="primary" size="large">
             Войти
           </Button>
           <div>

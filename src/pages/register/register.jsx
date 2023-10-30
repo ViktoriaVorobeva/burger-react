@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
 import { getRegister } from "../../services/registers/actions";
-import { Link, useNavigate, Navigate } from "react-router-dom";
-import { BASE_URL } from "../../utils/url";
-import { useDispatch, useSelector } from "react-redux";
-
-const REGISTERDATA = `${BASE_URL}/auth/register`;
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export function RegisterPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const {user} = useSelector(state => state.register);
 
   const [form, setValue] = useState({ email: "", password: "", name: "" });
 
@@ -25,16 +20,9 @@ export function RegisterPage() {
 
   let register = (e) => {
     e.preventDefault();
-    dispatch(getRegister(REGISTERDATA, form));
+    dispatch(getRegister(form));
     navigate('/', {replace: true});
   };
-
-  useEffect(() => {
-    if (user) {
-        <Navigate
-          to={'/'}
-        />
-  }}, [user]);
 
   return (
     <div className={styles.wrapper}>

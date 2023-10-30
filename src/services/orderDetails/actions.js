@@ -2,6 +2,8 @@ import {
     request
 } from "../../utils/checkResponse";
 import { getCookie } from "../../utils/cookie";
+import { BASE_URL } from "../../utils/url";
+import { urls } from "../../utils/urls";
 import {
     CLEAR_CONSTRUCTOR
 } from "../burgerConstructor/actions";
@@ -10,16 +12,22 @@ export const GET_ORDER__REQUEST = 'GET_ORDER__REQUEST';
 export const GET_ORDER__SUCCESS = 'GET_ORDER__SUCCESS';
 export const GET_ORDER__FAILURE = 'GET_ORDER__FAILURE';
 
-export const getOrdersData = (url, constructor, bun, getOpen, event) => {
+const ORDERDATA = `${BASE_URL}${urls.orders}`;
+
+export const getOrdersData = (constructor, bun) => {
     return function (dispatch) {
+        const oneBun = constructor.indexOf(bun);
+        const order = constructor.slice();
+        order.splice(oneBun, 1);
+        const newOrder = [bun, ...order];
         if (bun) {
             dispatch({
                 type: GET_ORDER__REQUEST,
             });
-            request(url, {
+            request(ORDERDATA, {
                     method: "POST",
                     body: JSON.stringify({
-                        ingredients: constructor.concat(bun)
+                        ingredients: newOrder.concat(bun)
                     }),
                     headers: {
                         "Content-type": "application/json; charset=UTF-8",
@@ -34,7 +42,6 @@ export const getOrdersData = (url, constructor, bun, getOpen, event) => {
                     dispatch({
                         type: CLEAR_CONSTRUCTOR,
                     });
-                    getOpen(event);
                 })
                 .catch(() => {
                     dispatch({

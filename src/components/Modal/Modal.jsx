@@ -4,25 +4,27 @@ import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import ReactDOM, { createPortal } from "react-dom";
 import modalStyles from "./modal.module.css";
 import propTypes from 'prop-types';
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 const modalRoot = document.getElementById("react-modals");
 
-function Modal({ children, title }) {
+function Modal({ children, title, onClose }) {
   let navigate = useNavigate();
-  function onDismiss() {
-    navigate(-1);
-  }
+
+  const closeModal = () => {
+    onClose ? onClose() : navigate('/');
+};
 
   React.useEffect(() => {
     const closeByEsc = ((e) => {
       if (e.key === 'Escape') {
-        onDismiss()
+        closeModal()
       }
     });
     document.addEventListener('keydown', closeByEsc);
     return () => document.removeEventListener('keydown', closeByEsc)
-  }, [onDismiss]);
+  }, [closeModal]);
+
   return ReactDOM.createPortal(
         <>
           <div className={modalStyles.modal}>
@@ -32,11 +34,11 @@ function Modal({ children, title }) {
               )}
             </div>
             <div className={modalStyles.button}>
-              <CloseIcon onClick={onDismiss} type="primary" />
+              <CloseIcon onClick={closeModal} type="primary" />
             </div>
             {children}
           </div>
-          <ModalOverlay close={onDismiss} />
+          <ModalOverlay close={closeModal} />
         </>,
     modalRoot
   );

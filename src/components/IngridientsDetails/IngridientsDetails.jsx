@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ingridientsDetailsStyles from "./ingridients-details.module.css";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -14,6 +14,7 @@ function IngridientsDetails() {
   const { id } = useParams();
 
   const ingridient = findIngridient(ingridients, id);
+  if(!ingridient) return null;
   return (
     <>
       {ingridient && (

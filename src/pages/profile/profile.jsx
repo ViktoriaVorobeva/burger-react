@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import {
   Input,
   Button,
@@ -8,9 +8,6 @@ import styles from "./profile.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../utils/url";
 import { getLogOut, updateUser } from "../../services/registers/actions";
-
-const LOGOUTDATA = `${BASE_URL}/auth/logout`;
-const USERDATA = `${BASE_URL}/auth/user`;
 
 export function ProfilePage() {
   const navigate = useNavigate();
@@ -26,13 +23,13 @@ export function ProfilePage() {
 
   const logout = (e) => {
     e.preventDefault();
-    dispatch(getLogOut(LOGOUTDATA));
+    dispatch(getLogOut());
     navigate("/", { replace: true });
   };
 
   const save = (e) => {
     e.preventDefault();
-    dispatch(updateUser(USERDATA, form));
+    dispatch(updateUser(form));
     setChange(false);
   };
 
@@ -72,7 +69,7 @@ export function ProfilePage() {
         </p>
       </div>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form onSubmit={save} className={styles.form}>
           <Input
             type={"text"}
             placeholder={"Имя"}
@@ -112,7 +109,7 @@ export function ProfilePage() {
           <div>
            { isFormChange &&
            <>
-           <Button onClick={save} htmlType="button" type="primary" size="medium">
+           <Button htmlType='submit' type="primary" size="medium">
               Сохранить
             </Button>
             <Button onClick={reset}  htmlType="button" type="secondary" size="medium">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import modalOverlayStyles from './modal-overlay.module.css';
 import propTypes from 'prop-types';
 

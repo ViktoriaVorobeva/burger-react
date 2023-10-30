@@ -4,7 +4,7 @@ import {
 } from './actions';
 
 export const initialState = {
-  ingredientDetails: {}
+  ingredientDetails: null
 }
 
 export default (state = initialState, action) => {
@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
     case CLOSE_INGRIDIENT: {
       return {
         ...state,
-        ingredientDetails: {}
+        ingredientDetails: null
       }
     }
     default: {

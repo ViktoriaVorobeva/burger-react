@@ -4,12 +4,9 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset.module.css";
-import { BASE_URL } from "../../utils/url";
 import { Link, Navigate, useNavigate} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { getPasswordReset } from "../../services/passwordReset/actions";
-
-const RESETPASSWORDDATA = `${BASE_URL}/password-reset/reset`;
 
 export function ResetPage() {
   const {email} = useSelector(state => state.forgotPassword);
@@ -30,7 +27,7 @@ export function ResetPage() {
 
   let reset = (e) => {
     e.preventDefault();
-    dispatch(getPasswordReset(RESETPASSWORDDATA, form));
+    dispatch(getPasswordReset(form));
     navigate('/', {replace: true});
   };
   return (
