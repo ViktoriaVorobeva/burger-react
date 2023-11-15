@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {FormEvent, useState} from "react";
 import {
   Input,
   Button,
@@ -8,19 +8,19 @@ import styles from "./login.module.css";
 import { getLogin } from "../../services/registers/actions";
 import { useDispatch } from "react-redux";
 
-
 export function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form, setValue] = useState({ email: '', password: '' });
 
-  const onChange = e => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+  const onChange = (e:FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement
+    setValue({ ...form, [target.name]: target.value });
   };
 
-  let login = 
-    e => {
+  let login = (e:React.SyntheticEvent) => {
       e.preventDefault();
+      // @ts-ignore
       dispatch(getLogin(form));
       navigate('/', {replace: true});
     };

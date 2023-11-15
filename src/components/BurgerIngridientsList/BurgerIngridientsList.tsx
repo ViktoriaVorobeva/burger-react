@@ -1,10 +1,13 @@
 import React from 'react';
 import BurgerIngridientsCard from '../BurgerIngridientsCard/BurgerIngridientsCard';
 import burgerListStyles from './burger-list.module.css';
-import propTypes from 'prop-types';
-import {ingridientPropTypes} from '../../utils/proptypes';
+import { TIngridient } from '../../types/ingridient';
 
-function BurgerIngridientsList({list}) {
+type TList = {
+  list: TIngridient[]
+}
+
+const BurgerIngridientsList: React.FC<TList> = ({list}) => {
     return (
         <div className="mb-10 ml-4 mr-4">
           <ul className={burgerListStyles.list}>
@@ -13,9 +16,5 @@ function BurgerIngridientsList({list}) {
         </div>
   );
 }
-
-BurgerIngridientsList.propTypes = {
-  list: propTypes.arrayOf(ingridientPropTypes).isRequired,
-};
 
 export default BurgerIngridientsList;

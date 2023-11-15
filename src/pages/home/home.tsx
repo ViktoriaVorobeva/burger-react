@@ -9,7 +9,7 @@ import Modal from "../../components/Modal/Modal";
 import OrderDetails from "../../components/OrderDetails/OrderDetails";
 
 function HomePage() {
-  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
 
   const openOrderModal = () => {
     setShowOrderModal(true);
@@ -20,7 +20,7 @@ function HomePage() {
   };
 
   const { isLoading, errors } = useSelector(
-    (state) => state.ingridients
+    (state: any) => state.ingridients
   );
 
   return (

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 function OrderDetails() {
   const { isLoading, errors, order } = useSelector(
-    (state) => state.orderDetails
+    (state: any) => state.orderDetails
   );
   return (
     <div className={ordersDetailsStyles.order}>

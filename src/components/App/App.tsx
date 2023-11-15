@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Location } from "react-router-dom";
 import HomePage from "../../pages/home/home";
 import { LoginPage } from "../../pages/login/login";
 import { RegisterPage } from "../../pages/register/register";
@@ -14,25 +14,29 @@ import Modal from "../Modal/Modal";
 import { useDispatch } from "react-redux";
 import { getIngridientsData } from "../../services/ingridients/actions";
 import { GET_REGISTER__FAILURE, GET_REGISTER__REQUEST, GET_REGISTER__SUCCESS } from "../../services/registers/actions";
-import { fetchWithRefresh } from "../../utils/fetchWithRefresh";
+import { TUserResponce, fetchWithRefresh } from "../../utils/fetchWithRefresh";
+
 
 function App() {
   let location = useLocation();
   const dispatch = useDispatch();
-  const background = location.state && location.state.backgroundLocation;
+
+  const locationState = location.state as { backgroundLocation: Location}
+
+  const background = locationState && locationState.backgroundLocation;
   useEffect(() => {
+    //@ts-ignore
     dispatch(getIngridientsData());
   }, [dispatch]);
-
   useEffect(() => {
     dispatch({
       type: GET_REGISTER__REQUEST,
   });
-  fetchWithRefresh()
+  fetchWithRefresh<TUserResponce>()
     .then((data) => {
       dispatch({
           type: GET_REGISTER__SUCCESS,
-          payload: data.user,
+          payload: data?.user,
       });
   })
   .catch(() => {
