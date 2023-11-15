@@ -10,7 +10,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function AppHeader() {
-  const {user} = useSelector(state => state.register);
+  const {user} = useSelector((state: any) => state.register);
   return (
     <header className={headerStyles.header}>
       <div className="container">

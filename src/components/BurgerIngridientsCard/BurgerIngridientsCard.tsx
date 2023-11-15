@@ -4,19 +4,23 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerCardStyles from "./burger-card.module.css";
-import propTypes from "prop-types";
-import { ingridientPropTypes } from "../../utils/proptypes";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
+import { TIngridient } from '../../types/ingridient';
 
-function BurgerIngridientsCard({ card, id }) {
+type TCard = {
+  card: TIngridient,
+  id: string
+}
+
+const BurgerIngridientsCard: React.FC<TCard> = ({ card, id }) => {
   let location = useLocation();
   const constructor = useSelector(
-    (store) => store.burgerConstructor.constructorIngridients
+    (store: any) => store.burgerConstructor.constructorIngridients
   );
 
-  const [count, setCount] = useState(null);
+  const [count, setCount] = useState(0);
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
       type: "ingridient",
@@ -29,16 +33,14 @@ function BurgerIngridientsCard({ card, id }) {
   );
 
   useEffect(() => {
-    if (dragRef) {
-      let total = null;
+      let total = 0;
       for (let el of constructor) {
         if (el === id) {
           total++;
         }
       }
       setCount(total);
-    }
-  }, [isDragging, constructor, dragRef, id]);
+  }, [isDragging, constructor, id]);
 
   return (
     <li
@@ -49,7 +51,7 @@ function BurgerIngridientsCard({ card, id }) {
         <div className="mb-1">
           <div className={burgerCardStyles.image_container}>
             <img src={card.image} alt={card.name} />
-            {count && <Counter count={count} size="default" extraClass="m-1" />}
+            {count !== 0 && <Counter count={count} size="default" extraClass="m-1" />}
           </div>
         </div>
         <div className="mb-1">
@@ -65,10 +67,5 @@ function BurgerIngridientsCard({ card, id }) {
     </li>
   );
 }
-
-BurgerIngridientsCard.propTypes = {
-  card: ingridientPropTypes,
-  id: propTypes.string.isRequired,
-};
 
 export default BurgerIngridientsCard;

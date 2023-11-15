@@ -1,13 +1,25 @@
-import { useDrag, useDrop } from 'react-dnd'
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd'
 import React, { useRef } from 'react'
 import constructorIngridient from "./constructor-ingridients.module.css";
-import propTypes from 'prop-types';
 
-  export const ConstructorIngridient = ({ id, index, moveCard, children }) => {
-    const ref = useRef(null)
+type TConstructorIng = {
+  id: string, 
+  index: number, 
+  moveCard: (dragIndex: number, hoverIndex: number) => void
+}
+
+interface DragItem {
+  index: number;
+  id: string;
+  type: string;
+  derp: string;
+}
+
+  export const ConstructorIngridient = ({ id, index, moveCard, children }: React.PropsWithChildren<TConstructorIng>) => {
+    const ref = useRef<HTMLDivElement>(null)
     const [, drop] = useDrop({
       accept: 'ingridient-card',
-      hover(item, monitor) {
+      hover(item: DragItem, monitor: DropTargetMonitor<DragItem>) {
         if (!ref.current) {
           return
         }
@@ -20,7 +32,7 @@ import propTypes from 'prop-types';
         const hoverMiddleY =
           (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
         const clientOffset = monitor.getClientOffset()
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top
+        const hoverClientY = (clientOffset?.y || 0) - hoverBoundingRect.top
         if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
           return
         }
@@ -52,10 +64,3 @@ import propTypes from 'prop-types';
       </div>
     )
   }
-
-  ConstructorIngridient.propTypes = {
-    id: propTypes.string.isRequired,
-    index: propTypes.number.isRequired, 
-    moveCard: propTypes.func.isRequired,
-    children: propTypes.element.isRequired,
-  };

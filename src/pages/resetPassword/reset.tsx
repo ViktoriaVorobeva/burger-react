@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {
   Input,
   Button,
@@ -9,13 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPasswordReset } from "../../services/passwordReset/actions";
 
 export function ResetPage() {
-  const {email} = useSelector(state => state.forgotPassword);
+  const {email} = useSelector((state: any) => state.forgotPassword);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form, setValue] = useState({ password: "", token: "" });
 
-  const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+  const onChange = (e:FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement
+    setValue({ ...form, [target.name]: target.value });
   };
 
   useEffect(() => {
@@ -25,8 +26,9 @@ export function ResetPage() {
         />
   }}, [email]);
 
-  let reset = (e) => {
+  let reset = (e:React.SyntheticEvent) => {
     e.preventDefault();
+    // @ts-ignore
     dispatch(getPasswordReset(form));
     navigate('/', {replace: true});
   };

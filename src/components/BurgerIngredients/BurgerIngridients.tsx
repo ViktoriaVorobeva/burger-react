@@ -4,8 +4,9 @@ import BurgerIngridientsList from "../BurgerIngridientsList/BurgerIngridientsLis
 import burgerIngridientsStyles from "./burger-ingridients.module.css";
 import { useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
+import { TIngridient } from "../../types/ingridient";
 
-function sortIngridients(ingridients) {
+function sortIngridients(ingridients:TIngridient[]) {
   const bun = [];
   const main = [];
   const sauce = [];
@@ -22,7 +23,7 @@ function sortIngridients(ingridients) {
 }
 
 function BurgerIngridients() {
-  const ingridients = useSelector((state) => state.ingridients.ingridients);
+  const ingridients = useSelector((state: any) => state.ingridients.ingridients);
   const [bun, main, sauce] = sortIngridients(ingridients);
 
   const [bunRef, bunInView] = useInView({
@@ -37,7 +38,7 @@ function BurgerIngridients() {
 
   const [current, setCurrent] = React.useState("one");
 
-  const setTab = (tab) => {
+  const setTab = (tab: string) => {
     setCurrent(tab);
     const element = document.getElementById(tab);
     if (element) element.scrollIntoView({ behavior: "smooth" });

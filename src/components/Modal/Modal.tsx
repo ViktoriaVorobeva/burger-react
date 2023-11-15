@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import ReactDOM, { createPortal } from "react-dom";
@@ -6,9 +6,14 @@ import modalStyles from "./modal.module.css";
 import propTypes from 'prop-types';
 import { useNavigate} from "react-router-dom";
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot = document.getElementById("react-modals") as HTMLElement;
 
-function Modal({ children, title, onClose }) {
+interface IModal {
+  title?: string,
+  onClose?: () => void,
+}
+
+const Modal = ({ children, title, onClose }: React.PropsWithChildren<IModal>) => {
   let navigate = useNavigate();
 
   const closeModal = () => {
@@ -16,7 +21,7 @@ function Modal({ children, title, onClose }) {
 };
 
   React.useEffect(() => {
-    const closeByEsc = ((e) => {
+    const closeByEsc = ((e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         closeModal()
       }
