@@ -1,12 +1,19 @@
+import { TUnionOrderActions } from "../interfaces"
 import { GET_ORDER__REQUEST, GET_ORDER__FAILURE, GET_ORDER__SUCCESS} from "./actions"
 
-const initialState = {
+type TOrderState = {
+  order: [] | number,
+  isLoading: boolean,
+  errors: null | boolean,
+}
+
+const initialState: TOrderState = {
     order: [],
     isLoading: false,
     errors: null,
 }
 
-export default (state = initialState, action) => {
+export default (state: TOrderState = initialState, action: TUnionOrderActions) => {
     switch(action.type) {
         case GET_ORDER__REQUEST: 
           return {
@@ -18,7 +25,7 @@ export default (state = initialState, action) => {
             ...state,
             isLoading: false,
             errors: null,
-            order: action.payload,
+            order: action.payload.order.number,
           }
           case GET_ORDER__FAILURE: 
           return {

@@ -1,3 +1,5 @@
+import { TConstructorIngridient } from "../../types/ingridient";
+import { TUnionConstructorActions } from "../interfaces";
 import {
   ADD_INGRIDIENT,
   DELETE_INGRIDIENT,
@@ -5,12 +7,17 @@ import {
   CLEAR_CONSTRUCTOR
 } from "./actions";
 
-const initialState = {
+type TConstructorState = {
+  bun: boolean | string;
+  constructorIngridients: Array<TConstructorIngridient>
+}
+
+const initialState: TConstructorState = {
   bun: false,
   constructorIngridients: [],
 }
 
-export default (state = initialState, action) => {
+export default (state:TConstructorState = initialState, action: TUnionConstructorActions) => {
   switch (action.type) {
     case ADD_INGRIDIENT:
       if (action.payload.type === 'bun') {

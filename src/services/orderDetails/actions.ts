@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunk } from "../../types/ingridient";
 import {
     request
 } from "../../utils/checkResponse";
@@ -14,8 +15,8 @@ export const GET_ORDER__FAILURE = 'GET_ORDER__FAILURE';
 
 const ORDERDATA = `${BASE_URL}${urls.orders}`;
 
-export const getOrdersData = (constructor, bun) => {
-    return function (dispatch) {
+export const getOrdersData: AppThunk = (constructor, bun) => {
+    return function (dispatch: AppDispatch) {
         const oneBun = constructor.indexOf(bun);
         const order = constructor.slice();
         order.splice(oneBun, 1);
@@ -37,7 +38,7 @@ export const getOrdersData = (constructor, bun) => {
                 .then((data) => {
                     dispatch({
                         type: GET_ORDER__SUCCESS,
-                        payload: data.order.number,
+                        payload: data,
                     });
                     dispatch({
                         type: CLEAR_CONSTRUCTOR,

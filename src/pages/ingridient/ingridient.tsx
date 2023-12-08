@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useSelector } from '../../types/hooks';
 import ingridientsDetailsStyles from "./ingridient.module.css";
 import { TIngridient } from "../../types/ingridient";
 
@@ -10,7 +10,7 @@ function findIngridient(ingridients: TIngridient[], id: string | undefined) {
 
 export function IngridientPage() {
   const { ingridients } = useSelector(
-    (state: any) => state.ingridients
+    (state) => state.ingridients
   );
   let { id } = useParams();
   const ingridient = findIngridient(ingridients, id);

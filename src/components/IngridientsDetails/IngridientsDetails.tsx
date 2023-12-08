@@ -1,12 +1,12 @@
 import React from "react";
 import ingridientsDetailsStyles from "./ingridients-details.module.css";
-import { useSelector } from "react-redux";
+import { useSelector } from '../../types/hooks';
 import { useParams } from "react-router-dom";
 import { findIngridient } from "../../utils/findIngridients";
 
 function IngridientsDetails() {
   const { ingridients } = useSelector(
-    (state: any) => state.ingridients
+    (state) => state.ingridients
   );
   const { id } = useParams();
 

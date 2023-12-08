@@ -1,12 +1,19 @@
+import { TUnionResetActions } from "../interfaces"
 import { GET_PASSWORD_RESET__REQUEST, GET_PASSWORD_RESET__SUCCESS, GET_PASSWORD_RESET__FAILURE} from "./actions"
 
-const initialState = {
+type TResetState = {
+  email: string | boolean,
+  isLoading: boolean,
+  errors: null | boolean,
+}
+
+const initialState: TResetState = {
     email: '',
     isLoading: false,
     errors: null,
 }
 
-export default (state = initialState, action) => {
+export default (state: TResetState = initialState, action: TUnionResetActions) => {
     switch(action.type) {
         case GET_PASSWORD_RESET__REQUEST: 
           return {
@@ -18,7 +25,7 @@ export default (state = initialState, action) => {
             ...state,
             isLoading: false,
             errors: null,
-            email: action.payload,
+            email: action.payload.success,
           }
           case GET_PASSWORD_RESET__FAILURE: 
           return {

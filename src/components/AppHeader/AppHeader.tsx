@@ -7,10 +7,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import headerStyles from "./app-header.module.css";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from '../../types/hooks';
 
 function AppHeader() {
-  const {user} = useSelector((state: any) => state.register);
+  const {user} = useSelector((state) => state.register);
   return (
     <header className={headerStyles.header}>
       <div className="container">
@@ -42,7 +42,7 @@ function AppHeader() {
                 <li>
                   <div className="pr-5 pl-5 pb-4 pt-4">
                     <NavLink
-                      to="/promo"
+                      to="/feed"
                       className={({ isActive }) =>
                         isActive ? "active" : "non-active"
                       }

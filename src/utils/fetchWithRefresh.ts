@@ -3,26 +3,26 @@ import { getCookie, setCookie } from "./cookie";
 import { BASE_URL } from "./url";
 import { urls } from "./urls";
 
-type TUser = {
+export type TUser = {
   email: string,
   password: string,
 }
 
-type TRegister = {
+export type TRegister = {
   email: string,
   password: string,
-  name: string
+  name: string,
 }
 
-type TUpUser = {
+export type TUpUser = {
   email: string,
   password?: string,
   name: string
 }
 
-export type TUserResponce = TServerResponce<{ user: TUser}>
+export type TUserResponce = TServerResponce<{ user: TUser, accessToken: string, refreshToken: string}>
 
-export type TRegisterResponce = TServerResponce<{ user: TRegister}>
+export type TRegisterResponce = TServerResponce<{ user: TRegister, accessToken: string, refreshToken: string}>
 
 export type TUpdateResponce = TServerResponce<{ user: TUpUser}>
 
@@ -65,19 +65,20 @@ export const getRefreshRequest = async (): Promise<TRefreshRespone> => {
   // })
 };
 
-export const fetchWithRefresh = async <T,>() => {
+export const fetchWithRefresh = async<T>() => {
   try {
     return await request<T>(USERDATA, {
-      method: "POST",
-      mode: "cors",
-      cache: "no-cache",
-      credentials: "same-origin",
+      // method: "POST",
+      // mode: "cors",
+      // cache: "no-cache",
+      // credentials: "same-origin",
       headers: {
+        authorization: 'Bearer ' + getCookie('token'),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token: localStorage.getItem("token") }),
-      redirect: "follow",
-      referrerPolicy: "no-referrer",
+      // body: JSON.stringify({ token: localStorage.getItem("token") }),
+      // redirect: "follow",
+      // referrerPolicy: "no-referrer",
     }).catch((error) => Promise.reject(error));
   } catch (error) {
     if (
@@ -88,21 +89,23 @@ export const fetchWithRefresh = async <T,>() => {
       if (!refreshData.success) {
         Promise.reject(refreshData);
       }
-      setCookie("accessToken", refreshData.accessToken);
+      const authToken = refreshData.accessToken?.split('Bearer ')[1];
+      setCookie("token", authToken);
       localStorage.setItem("token", refreshData.refreshToken);
       return await request<T>(USERDATA, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
+        // method: "GET",
+        // mode: "cors",
+        // cache: "no-cache",
+        // credentials: "same-origin",
         headers: {
-          Authorization: "Bearer " + getCookie("token"),
+          authorization: 'Bearer ' + getCookie('token'),
+          "Content-Type": "application/json",
         },
-        redirect: "follow",
-        referrerPolicy: "no-referrer",
+        // redirect: "follow",
+        // referrerPolicy: "no-referrer",
       });
     } else {
-        Promise.reject(error);
+        // Promise.reject(error);
     }
   }
 };
@@ -144,8 +147,8 @@ export const update = async (form:TUpUser): Promise<TUpdateResponce> => {
     cache: 'no-cache',
     credentials: 'same-origin',
     headers: {
+      authorization: 'Bearer ' + getCookie('token'),
         'Content-Type': 'application/json',
-        "Authorization": 'Bearer ' + getCookie('token')
     },
     redirect: 'follow',
     referrerPolicy: 'no-referrer',

@@ -1,13 +1,20 @@
+import { TIngridient } from "../../types/ingridient"
+import { TUnionIngridientsActions } from "../interfaces"
 import { GET_INGRIDIENTS__FAILURE, GET_INGRIDIENTS__REQUEST, GET_INGRIDIENTS__SUCCESS } from "./actions"
 
-const initialState = {
+type TIngridientsState = {
+  ingridients: TIngridient[],
+  isLoading: boolean,
+  errors: boolean | null,
+}
+
+const initialState: TIngridientsState = {
     ingridients: [],
     isLoading: false,
     errors: null,
-    constructorIngridients: [],
 }
 
-export default (state = initialState, action) => {
+export default (state: TIngridientsState = initialState, action: TUnionIngridientsActions) => {
     switch(action.type) {
         case GET_INGRIDIENTS__REQUEST: 
           return {
@@ -19,7 +26,7 @@ export default (state = initialState, action) => {
             ...state,
             isLoading: false,
             errors: null,
-            ingridients: action.payload
+            ingridients: action.payload.data
           }
           case GET_INGRIDIENTS__FAILURE: 
           return {

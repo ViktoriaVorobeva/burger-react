@@ -6,7 +6,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burger-constructor.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../types/hooks';
 import { useDrop } from "react-dnd";
 import {
   addIngridient,
@@ -16,7 +16,7 @@ import {
 import { getOrdersData } from "../../services/orderDetails/actions";
 import { ConstructorIngridient } from "../ConstructorIngridients/ConstructorIngridient";
 import { useNavigate } from "react-router-dom";
-import { TIngridient } from "../../types/ingridient";
+import { TConstructorIngridient, TIngridient } from "../../types/ingridient";
 import { findIngridient } from "../../utils/findIngridients";
 
 type TConstructor = {
@@ -25,13 +25,13 @@ type TConstructor = {
 
 const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const ingridients = useSelector((store: any) => store.ingridients.ingridients);
+  const ingridients = useSelector((store) => store.ingridients.ingridients);
   const constructor = useSelector(
-    (store: any) => store.burgerConstructor.constructorIngridients
+    (store) => store.burgerConstructor.constructorIngridients
   );
-  const bun = useSelector((store: any) => store.burgerConstructor.bun);
+  const bun = useSelector((store) => store.burgerConstructor.bun);
   const navigate = useNavigate();
-  const { user } = useSelector((store: any) => store.register);
+  const { user } = useSelector((store) => store.register);
 
   const dispatch = useDispatch();
 
@@ -52,7 +52,6 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
     } else {
       getOpen();
       const order = constructor.map((ingridient: TIngridient) => ingridient._id);
-      // @ts-ignore
       return dispatch(getOrdersData(order, bun));
     }
   };
@@ -60,7 +59,7 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
   const [, dropTarget] = useDrop(
     () => ({
       accept: "ingridient",
-      drop: (item) => {
+      drop: (item: TConstructorIngridient) => {
         dispatch(addIngridient(item));
       },
       collect: (monitor) => ({

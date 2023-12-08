@@ -1,4 +1,11 @@
+import { TUnionForgotActions } from "../interfaces"
 import { GET_PASSWORD_FORGOT__REQUEST, GET_PASSWORD_FORGOT__SUCCESS, GET_PASSWORD_FORGOT__FAILURE} from "./actions"
+
+type TForgotState = {
+    email: string,
+    isLoading: boolean,
+    errors: null | boolean,
+}
 
 const initialState = {
     email: '',
@@ -6,7 +13,7 @@ const initialState = {
     errors: null,
 }
 
-export default (state = initialState, action) => {
+export default (state = initialState, action: TUnionForgotActions) => {
     switch(action.type) {
         case GET_PASSWORD_FORGOT__REQUEST: 
           return {

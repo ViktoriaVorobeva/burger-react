@@ -5,11 +5,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset.module.css";
 import { Link, Navigate, useNavigate} from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from '../../types/hooks';
 import { getPasswordReset } from "../../services/passwordReset/actions";
 
 export function ResetPage() {
-  const {email} = useSelector((state: any) => state.forgotPassword);
+  const {email} = useSelector((state) => state.forgotPassword);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form, setValue] = useState({ password: "", token: "" });
@@ -28,7 +28,6 @@ export function ResetPage() {
 
   let reset = (e:React.SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(getPasswordReset(form));
     navigate('/', {replace: true});
   };

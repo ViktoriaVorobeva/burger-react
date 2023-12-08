@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunk } from "../../types/ingridient";
 import {
     request
 } from "../../utils/checkResponse";
@@ -10,8 +11,8 @@ export const GET_PASSWORD_RESET__FAILURE = 'GET_PASSWORD_RESET__FAILURE';
 
 const RESETPASSWORDDATA = `${BASE_URL}${urls.reset}`;
 
-export const getPasswordReset = (form) => {
-    return function (dispatch) {
+export const getPasswordReset: AppThunk = (form) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: GET_PASSWORD_RESET__REQUEST,
         });
@@ -25,7 +26,7 @@ export const getPasswordReset = (form) => {
             .then((data) => {
                 dispatch({
                     type: GET_PASSWORD_RESET__SUCCESS,
-                    payload: data.success,
+                    payload: data,
                 });
             })
             .catch(() => {

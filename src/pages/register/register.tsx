@@ -6,7 +6,7 @@ import {
 import styles from "./register.module.css";
 import { getRegister } from "../../services/registers/actions";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../../types/hooks';
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ export function RegisterPage() {
 
   let register = (e:React.SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(getRegister(form));
     navigate('/', {replace: true});
   };

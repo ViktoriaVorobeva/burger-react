@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./forgot.module.css";
 import { Link, useNavigate} from 'react-router-dom';
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../../types/hooks';
 import { getPasswordForgot } from "../../services/passwordForgot/actions";
 
 export function ForgotPage() {
@@ -20,7 +20,6 @@ export function ForgotPage() {
   
   let forgot = (e:React.SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(getPasswordForgot(value));
     navigate('/reset-password', {replace: true});
   };

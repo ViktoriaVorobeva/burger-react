@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunk } from "../../types/ingridient";
 import {
     request
 } from "../../utils/checkResponse";
@@ -10,8 +11,8 @@ export const GET_PASSWORD_FORGOT__FAILURE = 'GET_PASSWORD_FORGOT__FAILURE';
 
 const FORGOTPASSWORDDATA = `${BASE_URL}${urls.forgot}`;
 
-export const getPasswordForgot = (email) => {
-    return function (dispatch) {
+export const getPasswordForgot: AppThunk = (email: string) => {
+    return function (dispatch: AppDispatch) {
             dispatch({
                 type: GET_PASSWORD_FORGOT__REQUEST,
             });

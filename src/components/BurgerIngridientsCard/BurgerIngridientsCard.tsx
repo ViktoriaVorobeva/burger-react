@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerCardStyles from "./burger-card.module.css";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
+import { useSelector } from '../../types/hooks';
 import { Link, useLocation } from "react-router-dom";
 import { TIngridient } from '../../types/ingridient';
 
@@ -17,7 +17,7 @@ type TCard = {
 const BurgerIngridientsCard: React.FC<TCard> = ({ card, id }) => {
   let location = useLocation();
   const constructor = useSelector(
-    (store: any) => store.burgerConstructor.constructorIngridients
+    (store) => store.burgerConstructor.constructorIngridients
   );
 
   const [count, setCount] = useState(0);

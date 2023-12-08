@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunk } from "../../types/ingridient";
 import {
     setCookie
 } from "../../utils/cookie";
@@ -19,8 +20,8 @@ export const GET_LOGOUT__REQUEST = 'GET_LOGOUT__REQUEST';
 export const GET_LOGOUT__SUCCESS = 'GET_LOGOUT__SUCCESS';
 export const GET_LOGOUT__FAILURE = 'GET_LOGOUT__FAILURE';
 
-export const getRegister = (form) => {
-    return function (dispatch) {
+export const getRegister: AppThunk = (form) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: GET_REGISTER__REQUEST,
         });
@@ -44,8 +45,8 @@ export const getRegister = (form) => {
     }
 };
 
-export const getLogin = (form) => {
-    return function (dispatch) {
+export const getLogin: AppThunk = (form) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: GET_LOGIN__REQUEST,
         });
@@ -69,8 +70,8 @@ export const getLogin = (form) => {
     }
 };
 
-export const updateUser = (form) => {
-    return function (dispatch) {
+export const updateUser: AppThunk = (form) => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: GET_UPDATE__REQUEST,
         });
@@ -89,8 +90,8 @@ export const updateUser = (form) => {
     }
 };
 
-export const getLogOut = () => {
-    return function (dispatch) {
+export const getLogOut: AppThunk = () => {
+    return function (dispatch: AppDispatch) {
         dispatch({
             type: GET_LOGOUT__REQUEST,
         });

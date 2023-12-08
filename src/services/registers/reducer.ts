@@ -1,3 +1,4 @@
+import { TUserActions } from "../interfaces"
 import { 
   GET_REGISTER__REQUEST, 
   GET_REGISTER__SUCCESS, 
@@ -12,14 +13,21 @@ import {
   GET_LOGOUT__SUCCESS,
   GET_LOGOUT__FAILURE
 } from "./actions"
+import {TUser, TUpUser, TRegister} from '../../utils/fetchWithRefresh'
 
-const initialState = {
+type UserState = {
+  user: string | TUser | TUpUser | TRegister,
+  isLoading: boolean,
+  errors: null | boolean,
+}
+
+const initialState: UserState = {
     user: '',
     isLoading: false,
     errors: null,
 }
 
-export default (state = initialState, action) => {
+export default (state: UserState = initialState, action: TUserActions) => {
     switch(action.type) {
         case GET_REGISTER__REQUEST: 
           return {

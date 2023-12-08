@@ -6,7 +6,7 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import styles from "./login.module.css";
 import { getLogin } from "../../services/registers/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../../types/hooks';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ export function LoginPage() {
 
   let login = (e:React.SyntheticEvent) => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(getLogin(form));
       navigate('/', {replace: true});
     };

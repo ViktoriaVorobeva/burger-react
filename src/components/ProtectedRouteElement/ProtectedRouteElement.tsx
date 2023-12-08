@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../types/hooks';
 import { Navigate, useLocation } from 'react-router-dom';
 
 type TProtected = {
@@ -8,8 +8,8 @@ type TProtected = {
 }
 
 export const ProtectedRouteElement = ({ children, onlyUnAuth = false }: React.PropsWithChildren<TProtected>) => {
-    const isAuthChecked = useSelector((state: any) => state.register.isLoading);
-    const {user} = useSelector((state: any) => state.register);
+    const isAuthChecked = useSelector((state) => state.register.isLoading);
+    const {user} = useSelector((state) => state.register);
     const location = useLocation();
   
     if (isAuthChecked) {

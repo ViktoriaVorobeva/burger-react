@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import appStyles from "./home.module.css";
-import { useSelector } from "react-redux";
+import { useSelector } from '../../types/hooks';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BurgerIngridients from "../../components/BurgerIngredients/BurgerIngridients";
@@ -20,7 +20,7 @@ function HomePage() {
   };
 
   const { isLoading, errors } = useSelector(
-    (state: any) => state.ingridients
+    (state) => state.ingridients
   );
 
   return (
