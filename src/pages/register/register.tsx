@@ -4,9 +4,9 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
-import { getRegister } from "../../services/registers/actions";
+import { getRegister } from "../../services/actions";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ export function RegisterPage() {
 
   let register = (e:React.SyntheticEvent) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(getRegister(form));
     navigate('/', {replace: true});
   };

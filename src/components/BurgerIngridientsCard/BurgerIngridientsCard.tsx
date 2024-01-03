@@ -5,9 +5,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerCardStyles from "./burger-card.module.css";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { TIngridient } from '../../types/ingridient';
+import { useSelector } from "../../services/hooks";
 
 type TCard = {
   card: TIngridient,
@@ -17,7 +17,7 @@ type TCard = {
 const BurgerIngridientsCard: React.FC<TCard> = ({ card, id }) => {
   let location = useLocation();
   const constructor = useSelector(
-    (store: any) => store.burgerConstructor.constructorIngridients
+    (store) => store.burgerConstructor.constructorIngridients
   );
 
   const [count, setCount] = useState(0);
@@ -35,7 +35,7 @@ const BurgerIngridientsCard: React.FC<TCard> = ({ card, id }) => {
   useEffect(() => {
       let total = 0;
       for (let el of constructor) {
-        if (el === id) {
+        if (el.id === id) {
           total++;
         }
       }

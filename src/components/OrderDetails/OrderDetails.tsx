@@ -1,11 +1,11 @@
 import React from "react";
 import ordersDetailsStyles from "./order-details.module.css";
 import check from "../../images/check.svg";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/hooks";
 
 function OrderDetails() {
   const { isLoading, errors, order } = useSelector(
-    (state: any) => state.orderDetails
+    (state) => state.orderDetails
   );
   return (
     <div className={ordersDetailsStyles.order}>

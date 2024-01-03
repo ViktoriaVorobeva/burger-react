@@ -6,18 +6,19 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import burgerConstructorStyles from "./burger-constructor.module.css";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
   addIngridient,
-  DELETE_INGRIDIENT,
-  SORT_INGRIDIENT,
-} from "../../services/burgerConstructor/actions";
-import { getOrdersData } from "../../services/orderDetails/actions";
+  deleteIngridient,
+  getOrdersData,
+  sortIngridient
+} from "../../services/actions";
 import { ConstructorIngridient } from "../ConstructorIngridients/ConstructorIngridient";
 import { useNavigate } from "react-router-dom";
 import { TIngridient } from "../../types/ingridient";
 import { findIngridient } from "../../utils/findIngridients";
+import { IIngridientConstructor, IIngridientItem } from "../../services/types";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 type TConstructor = {
   getOpen: () => void
@@ -25,13 +26,13 @@ type TConstructor = {
 
 const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
   const [totalPrice, setTotalPrice] = useState(0);
-  const ingridients = useSelector((store: any) => store.ingridients.ingridients);
+  const ingridients = useSelector((store) => store.ingridients.ingridients);
   const constructor = useSelector(
-    (store: any) => store.burgerConstructor.constructorIngridients
+    (store) => store.burgerConstructor.constructorIngridients
   );
-  const bun = useSelector((store: any) => store.burgerConstructor.bun);
+  const bun = useSelector((store) => store.burgerConstructor.bun);
   const navigate = useNavigate();
-  const { user } = useSelector((store: any) => store.register);
+  const { user } = useSelector((store) => store.register);
 
   const dispatch = useDispatch();
 
@@ -41,7 +42,7 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
       const newCards = [...constructor];
       newCards.splice(dragIndex, 1);
       newCards.splice(hoverIndex, 0, dragCard);
-      dispatch({ type: SORT_INGRIDIENT, payload: newCards });
+      dispatch(sortIngridient(newCards));
     },
     [dispatch, constructor]
   );
@@ -51,16 +52,16 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
       navigate("/login?retpath=/");
     } else {
       getOpen();
-      const order = constructor.map((ingridient: TIngridient) => ingridient._id);
-      // @ts-ignore
-      return dispatch(getOrdersData(order, bun));
+      const order = constructor.map((ingridient: IIngridientConstructor) => ingridient.id);
+      console.log(constructor)
+      return dispatch(getOrdersData(order, bun as string));
     }
   };
 
   const [, dropTarget] = useDrop(
     () => ({
       accept: "ingridient",
-      drop: (item) => {
+      drop: (item: IIngridientItem) => {
         dispatch(addIngridient(item));
       },
       collect: (monitor) => ({
@@ -71,18 +72,20 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
   );
 
   const handleDelete = (id: string) => {
-    dispatch({ type: DELETE_INGRIDIENT, payload: id });
+    dispatch(deleteIngridient(id));
   };
 
-  useEffect(() => {
-    const ids = constructor.map((ingridient: TIngridient) => ingridient._id);
+  useEffect(() => { 
+    const ids = constructor.map((ingridient: IIngridientConstructor) => ingridient.id);
     let sum = ids.reduce((acc: number, item: string) => {
       let element = findIngridient(ingridients, item);
       return acc + (element?.price || 0);
     }, 0);
-    if (bun) {
+    if (typeof bun === 'string') {
       let bunElement = findIngridient(ingridients, bun);
-      sum += bunElement?.price;
+      if (bunElement?.price) {
+        sum += bunElement?.price;
+      }
     }
     setTotalPrice(sum);
   }, [dispatch, constructor, ingridients, bun]);
@@ -172,7 +175,7 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
             ref={dropTarget}
             className={burgerConstructorStyles.constructor_list}
           >
-            {bun ? createBunTopElement(bun) : initTopBunConstructor}
+            {typeof bun === 'string' ? createBunTopElement(bun) : initTopBunConstructor}
             {constructor.length === 0 || (constructor.length === 1 && bun)
               ? initConstructor
               : constructor.map(({ id, uniqueId }: {id: string, uniqueId: string}, index: number) => {
@@ -181,7 +184,7 @@ const BurgerConstructor: React.FC<TConstructor> = ({ getOpen }) => {
                     return createConstructorElement(ingr, uniqueId, index);
                   }
                 })}
-            {bun ? createBunBottomElement(bun) : initBottomBunConstructor}
+            {typeof bun === 'string' ? createBunBottomElement(bun) : initBottomBunConstructor}
           </div>
         </div>
         <div className={burgerConstructorStyles.price}>
