@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import appStyles from "./home.module.css";
-import { useSelector } from "react-redux";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import BurgerIngridients from "../../components/BurgerIngredients/BurgerIngridients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import Modal from "../../components/Modal/Modal";
 import OrderDetails from "../../components/OrderDetails/OrderDetails";
+import { useSelector } from "../../services/hooks";
 
 function HomePage() {
   const [showOrderModal, setShowOrderModal] = useState<boolean>(false);
@@ -20,7 +20,7 @@ function HomePage() {
   };
 
   const { isLoading, errors } = useSelector(
-    (state: any) => state.ingridients
+    (state) => state.ingridients
   );
 
   return (

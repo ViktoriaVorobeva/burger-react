@@ -2,31 +2,34 @@ import { request } from "./checkResponse";
 import { getCookie, setCookie } from "./cookie";
 import { BASE_URL } from "./url";
 import { urls } from "./urls";
+import {TRegister, TUser, TUpUser, IReset} from '../services/types';
 
-type TUser = {
-  email: string,
-  password: string,
+type TRegisterUser = {
+  success: boolean,
+  user: {
+    email: string,
+    name: string
+  }
+  refreshToken: string;
+  accessToken: string;
 }
 
-type TRegister = {
-  email: string,
-  password: string,
-  name: string
+type TUpdateUser = {
+  success: boolean,
+  user: {
+    email: string,
+    name: string
+  }
 }
 
-type TUpUser = {
-  email: string,
-  password?: string,
-  name: string
-}
 
-export type TUserResponce = TServerResponce<{ user: TUser}>
+export type TUserResponce = TServerResponce<TRegisterUser>
 
-export type TRegisterResponce = TServerResponce<{ user: TRegister}>
+export type TRegisterResponce = TServerResponce<TRegisterUser>
 
-export type TUpdateResponce = TServerResponce<{ user: TUpUser}>
+export type TUpdateResponce = TServerResponce<TUpdateUser>
 
-export type TOutResponce = TServerResponce<{ message: string}>
+export type TOutResponce = TServerResponce<IReset>
 
 export type TServerResponce<T> = {
   success: boolean;
@@ -46,39 +49,28 @@ const LOGOUTDATA = `${BASE_URL}${urls.logout}`;
 export const getRefreshRequest = async (): Promise<TRefreshRespone> => {
   return request<TRefreshRespone>(REFRESHDATA, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ token: localStorage.getItem("token") }),
-    redirect: "follow",
-    referrerPolicy: "no-referrer",
+    body: JSON.stringify({'token': localStorage.getItem('token')}),
   });
-  //       .then((data) => {
-  //         const authToken = data.accessToken?.split('Bearer ')[1];
-  //         if (authToken) {
-  //             setCookie('token', authToken);
-  //             localStorage.setItem('token', data.refreshToken)
-  //         }
-  // })
 };
 
 export const fetchWithRefresh = async <T,>() => {
   try {
     return await request<T>(USERDATA, {
-      method: "POST",
+      method: "GET",
       mode: "cors",
       cache: "no-cache",
       credentials: "same-origin",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("token"),
       },
-      body: JSON.stringify({ token: localStorage.getItem("token") }),
+      // body: JSON.stringify({ token: localStorage.getItem("token") }),
       redirect: "follow",
       referrerPolicy: "no-referrer",
-    }).catch((error) => Promise.reject(error));
+    })
   } catch (error) {
     if (
       (error as { message: string }).message === "jwt expired" &&
@@ -88,7 +80,7 @@ export const fetchWithRefresh = async <T,>() => {
       if (!refreshData.success) {
         Promise.reject(refreshData);
       }
-      setCookie("accessToken", refreshData.accessToken);
+      setCookie("token", refreshData.accessToken.split('Bearer ')[1]);
       localStorage.setItem("token", refreshData.refreshToken);
       return await request<T>(USERDATA, {
         method: "GET",
@@ -101,8 +93,6 @@ export const fetchWithRefresh = async <T,>() => {
         redirect: "follow",
         referrerPolicy: "no-referrer",
       });
-    } else {
-        Promise.reject(error);
     }
   }
 };
