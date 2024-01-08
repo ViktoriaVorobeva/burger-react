@@ -18,7 +18,7 @@ export function LoginPage() {
     setValue({ ...form, [target.name]: target.value });
   };
 
-  let login = (e:React.SyntheticEvent) => {
+  const login = (e:React.SyntheticEvent) => {
       e.preventDefault();
       dispatch(getLogin(form));
       navigate('/', {replace: true});

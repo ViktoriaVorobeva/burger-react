@@ -18,7 +18,7 @@ export function ForgotPage() {
 
   const navigate = useNavigate();
   
-  let forgot = (e:React.SyntheticEvent) => {
+  const forgot = (e:React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(getPasswordForgot(value));
     navigate('/reset-password', {replace: true});

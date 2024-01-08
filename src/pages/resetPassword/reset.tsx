@@ -26,7 +26,7 @@ export function ResetPage() {
         />
   }}, [email]);
 
-  let reset = (e:React.SyntheticEvent) => {
+  const reset = (e:React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(getPasswordReset(form));
     navigate('/', {replace: true});

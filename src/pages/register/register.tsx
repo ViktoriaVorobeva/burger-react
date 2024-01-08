@@ -19,7 +19,7 @@ export function RegisterPage() {
     setValue({ ...form, [target.name]: target.value });
   };
 
-  let register = (e:React.SyntheticEvent) => {
+  const register = (e:React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(getRegister(form));
     navigate('/', {replace: true});
