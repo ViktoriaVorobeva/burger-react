@@ -1,4 +1,4 @@
-import React, {FormEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import {
   Input,
   Button,
@@ -13,12 +13,12 @@ export function LoginPage() {
   const dispatch = useDispatch();
   const [form, setValue] = useState({ email: '', password: '' });
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
-  const login = (e:React.SyntheticEvent) => {
+  const login = (e:FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(getLogin(form));
       navigate('/', {replace: true});

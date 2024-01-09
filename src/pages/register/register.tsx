@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, useState, FormEvent } from "react";
 import {
   Input,
   Button,
@@ -14,12 +14,12 @@ export function RegisterPage() {
 
   const [form, setValue] = useState({ email: "", password: "", name: "" });
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
-  const register = (e:React.SyntheticEvent) => {
+  const register = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(getRegister(form));
     navigate('/', {replace: true});

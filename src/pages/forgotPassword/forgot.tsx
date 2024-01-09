@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import {
   Input,
   Button,
@@ -12,13 +12,13 @@ export function ForgotPage() {
   const [value, setValue] = React.useState("");
   const dispatch = useDispatch();
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    setValue((e.target as HTMLInputElement).value);
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
   };
 
   const navigate = useNavigate();
   
-  const forgot = (e:React.SyntheticEvent) => {
+  const forgot = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(getPasswordForgot(value));
     navigate('/reset-password', {replace: true});

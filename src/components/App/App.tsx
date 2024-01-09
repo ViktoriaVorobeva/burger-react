@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
-import { Routes, Route, useLocation, Location } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Location,
+  useNavigate,
+} from "react-router-dom";
 import HomePage from "../../pages/home/home";
 import { LoginPage } from "../../pages/login/login";
 import { RegisterPage } from "../../pages/register/register";
 import { ForgotPage } from "../../pages/forgotPassword/forgot";
 import { ResetPage } from "../../pages/resetPassword/reset";
-import { IngridientPage } from "../../pages/ingridient/ingridient";
 import AppHeader from "../AppHeader/AppHeader";
 import { ProfilePage } from "../../pages/profile/profile";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
@@ -30,6 +35,21 @@ import { OrdersHistory } from "../OrdersHistory/OrdersHistory";
 function App() {
   let location = useLocation();
   const dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  const [showFeedModal, setShowFeedModal] = useState<boolean>(false);
+
+  const closeFeedModal = () => {
+    setShowFeedModal(false);
+    navigate("/feed");
+  };
+
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
+
+  const closeProfileModal = () => {
+    setShowProfileModal(false);
+    navigate("/profile/orders");
+  };
 
   const locationState = location.state as { backgroundLocation: Location };
 
@@ -106,7 +126,7 @@ function App() {
           }
         />
         <Route path="/feed/:id" element={<OrderInfo />} />
-        <Route path="/ingredients/:id" element={<IngridientPage />} />
+        <Route path="/ingredients/:id" element={<IngridientsDetails />} />
       </Routes>
       {background && (
         <Routes>
@@ -121,7 +141,7 @@ function App() {
           <Route
             path="/feed/:id"
             element={
-              <Modal>
+              <Modal onClose={closeFeedModal}>
                 <Order />
               </Modal>
             }
@@ -129,9 +149,11 @@ function App() {
           <Route
             path="/profile/orders/:id"
             element={
-              <Modal>
-                <OrderUser />
-              </Modal>
+              <ProtectedRouteElement>
+                <Modal onClose={closeProfileModal}>
+                  <OrderUser />
+                </Modal>
+              </ProtectedRouteElement>
             }
           />
         </Routes>

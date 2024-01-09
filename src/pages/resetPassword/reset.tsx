@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState, FormEvent} from "react";
 import {
   Input,
   Button,
@@ -14,8 +14,8 @@ export function ResetPage() {
   const navigate = useNavigate();
   const [form, setValue] = useState({ password: "", token: "" });
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
@@ -26,7 +26,7 @@ export function ResetPage() {
         />
   }}, [email]);
 
-  const reset = (e:React.SyntheticEvent) => {
+  const reset = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(getPasswordReset(form));
     navigate('/', {replace: true});

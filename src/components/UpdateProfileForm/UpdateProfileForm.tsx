@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, useState, FormEvent } from "react";
 import {
   Input,
   Button,
@@ -14,13 +14,13 @@ export const UpdateProfileForm = () => {
     const [form, setValue] = useState(user);
     const [isFormChange, setChange] = useState(false);
   
-    const onChange = (e: FormEvent<HTMLInputElement>) => {
-      const target = e.target as HTMLInputElement;
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const target = e.target;
       setValue({ ...(form as TUpUser), [target.name]: target.value });
       setChange(true);
     };
   
-    const save = (e: React.SyntheticEvent) => {
+    const save = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       dispatch(updateUser(form as TUpUser));
       setChange(false);

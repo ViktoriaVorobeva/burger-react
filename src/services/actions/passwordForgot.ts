@@ -42,7 +42,7 @@ export const getForgotFailureAction = (): IGetForgotFailure => ({
 });
 
 export const getPasswordForgot = (email: string): AppThunkAction => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(getForgotAction());
     request<IForgot>(FORGOTPASSWORDDATA, {
       method: "POST",

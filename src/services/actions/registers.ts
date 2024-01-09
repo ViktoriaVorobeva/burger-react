@@ -133,7 +133,7 @@ export type TUserActions =
   });
 
 export const getRegister = (form: TRegister): AppThunkAction => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(getRegisterAction());
     getRegist(form)
       .then((data) => {
@@ -169,7 +169,7 @@ export const getLogin = (form: TUser): AppThunkAction => {
 };
 
 export const updateUser = (form: TUpUser): AppThunkAction => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(getUpAction());
     update(form)
       .then((data) => {
@@ -182,7 +182,7 @@ export const updateUser = (form: TUpUser): AppThunkAction => {
 };
 
 export const getLogOut = (): AppThunkAction => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(getLogoutAction());
     logout()
       .then(() => {

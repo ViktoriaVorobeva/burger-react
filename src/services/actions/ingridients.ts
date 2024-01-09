@@ -41,7 +41,7 @@ export const getIngridientsFailureAction = (): IGetIngridientsFailure => ({
 });
 
 export const getIngridientsData = (): AppThunkAction => {
-  return async function (dispatch: AppDispatch) {
+  return async function (dispatch) {
     dispatch(getIngridientsAction());
 
     request<IIngridients>(INGRIDIENTSDATA)
