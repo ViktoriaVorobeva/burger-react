@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import BurgerIngridientsList from "../BurgerIngridientsList/BurgerIngridientsList";
 import burgerIngridientsStyles from "./burger-ingridients.module.css";
-import { useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { TIngridient } from "../../types/ingridient";
+import { useSelector } from "../../services/hooks";
 
 function sortIngridients(ingridients:TIngridient[]) {
   const bun = [];
@@ -23,7 +23,7 @@ function sortIngridients(ingridients:TIngridient[]) {
 }
 
 function BurgerIngridients() {
-  const ingridients = useSelector((state: any) => state.ingridients.ingridients);
+  const ingridients = useSelector((state) => state.ingridients.ingridients);
   const [bun, main, sauce] = sortIngridients(ingridients);
 
   const [bunRef, bunInView] = useInView({

@@ -1,12 +1,12 @@
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, useState, FormEvent } from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./register.module.css";
-import { getRegister } from "../../services/registers/actions";
+import { getRegister } from "../../services/actions";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/hooks";
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -14,14 +14,13 @@ export function RegisterPage() {
 
   const [form, setValue] = useState({ email: "", password: "", name: "" });
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
-  let register = (e:React.SyntheticEvent) => {
+  const register = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(getRegister(form));
     navigate('/', {replace: true});
   };

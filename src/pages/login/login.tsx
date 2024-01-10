@@ -1,26 +1,25 @@
-import React, {FormEvent, useState} from "react";
+import React, {ChangeEvent, FormEvent, useState} from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from 'react-router-dom';
 import styles from "./login.module.css";
-import { getLogin } from "../../services/registers/actions";
-import { useDispatch } from "react-redux";
+import { getLogin } from "../../services/actions";
+import { useDispatch } from "../../services/hooks";
 
 export function LoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form, setValue] = useState({ email: '', password: '' });
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
-  let login = (e:React.SyntheticEvent) => {
+  const login = (e:FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      // @ts-ignore
       dispatch(getLogin(form));
       navigate('/', {replace: true});
     };

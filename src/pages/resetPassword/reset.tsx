@@ -1,21 +1,21 @@
-import React, {FormEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState, FormEvent} from "react";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./reset.module.css";
 import { Link, Navigate, useNavigate} from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
-import { getPasswordReset } from "../../services/passwordReset/actions";
+import { getPasswordReset } from "../../services/actions";
+import { useDispatch, useSelector } from "../../services/hooks";
 
 export function ResetPage() {
-  const {email} = useSelector((state: any) => state.forgotPassword);
+  const {email} = useSelector((state) => state.forgotPassword);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form, setValue] = useState({ password: "", token: "" });
 
-  const onChange = (e:FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement
+  const onChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
     setValue({ ...form, [target.name]: target.value });
   };
 
@@ -26,9 +26,8 @@ export function ResetPage() {
         />
   }}, [email]);
 
-  let reset = (e:React.SyntheticEvent) => {
+  const reset = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // @ts-ignore
     dispatch(getPasswordReset(form));
     navigate('/', {replace: true});
   };
