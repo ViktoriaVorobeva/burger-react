@@ -1,5 +1,5 @@
 import { setCookie } from "../../utils/cookie";
-import { getRegist, login, logout, update } from "../../utils/fetchWithRefresh";
+import { TUserResponce, fetchWithRefresh, getRegist, login, logout, update } from "../../utils/fetchWithRefresh";
 import {
   GET_REGISTER__REQUEST,
   GET_REGISTER__SUCCESS,
@@ -193,5 +193,20 @@ export const getLogOut = (): AppThunkAction => {
       .catch(() => {
         dispatch(getLogoutFailureAction());
       });
+  };
+};
+
+export const getUserWithRefresh = (): AppThunkAction => {
+  return function (dispatch) {
+    dispatch(getRegisterAction());
+    fetchWithRefresh<TUserResponce>().then((data) => {
+      if (data) {
+        dispatch(getRegisterSuccessAction(data.user));
+      } else {
+        dispatch(getRegisterFailureAction());
+      }
+    }).catch(() => {
+      dispatch(getRegisterFailureAction());
+    });
   };
 };

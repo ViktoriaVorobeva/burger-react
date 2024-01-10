@@ -18,11 +18,8 @@ import IngridientsDetails from "../IngridientsDetails/IngridientsDetails";
 import Modal from "../Modal/Modal";
 import {
   getIngridientsData,
-  getRegisterAction,
-  getRegisterFailureAction,
-  getRegisterSuccessAction,
+  getUserWithRefresh,
 } from "../../services/actions";
-import { TUserResponce, fetchWithRefresh } from "../../utils/fetchWithRefresh";
 import { useDispatch } from "../../services/hooks";
 import FeedPage from "../../pages/feed/feed";
 import { OrderInfo } from "../../pages/order-info/order-info";
@@ -57,15 +54,9 @@ function App() {
   useEffect(() => {
     dispatch(getIngridientsData());
   }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getRegisterAction());
-    fetchWithRefresh<TUserResponce>().then((data) => {
-      if (data) {
-        dispatch(getRegisterSuccessAction(data.user));
-      } else {
-        dispatch(getRegisterFailureAction());
-      }
-    });
+    dispatch(getUserWithRefresh());
   }, [dispatch]);
 
   return (
