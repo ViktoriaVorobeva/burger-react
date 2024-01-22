@@ -26,17 +26,17 @@ export const constructorReducer = (
       if (action.payload.type === "bun") {
         if (state.bun) {
           const newFilterIngridients = state.constructorIngridients.filter(
-            ({ id }) => id !== state.bun
+            ({ _id }) => _id !== state.bun
           );
           return {
             ...state,
-            bun: action.payload.id,
+            bun: action.payload._id,
             constructorIngridients: [...newFilterIngridients, action.payload],
           };
         }
         return {
           ...state,
-          bun: action.payload.id,
+          bun: action.payload._id,
           constructorIngridients: [
             ...state.constructorIngridients,
             action.payload,

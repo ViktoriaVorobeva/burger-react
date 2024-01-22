@@ -1,6 +1,5 @@
-import { nanoid } from "nanoid";
 import { ADD_INGRIDIENT, DELETE_INGRIDIENT, SORT_INGRIDIENT } from "../constants";
-import { IIngridientItem, IIngridientConstructor } from "../types";
+import { IIngridientConstructor } from "../types";
 
 export interface IGetAddIngridient {
     readonly type: typeof ADD_INGRIDIENT;
@@ -22,13 +21,10 @@ export type TConstructorActions =
   | IGetSortIngridient
   | IGetDeleteIngridient;
 
-export const addIngridient = (item: IIngridientItem): IGetAddIngridient => {
+export const addIngridient = (item: IIngridientConstructor): IGetAddIngridient => {
     return {
         type: ADD_INGRIDIENT,
-        payload: {
-            ...item, 
-           uniqueId: nanoid() 
-        }
+        payload: item, 
     }
 }
 

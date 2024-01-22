@@ -1,0 +1,9 @@
+{
+    "success": true,
+    "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1M2UyYzcyNTJiNGNmMDAxZDg2ZThlNiIsImlhdCI6MTcwNTk2MTE4NSwiZXhwIjoxNzA1OTYyMzg1fQ.8kQ90MDZ4EXxg5hX34l5saACD-CAskJ7BxIW_fY3uPo",
+    "refreshToken": "5b4eb4697663181822fb7c08625843db3e1fb448e2c4e015da3030bbfa1768d07a712eaa1b9b769d",
+    "user": {
+        "email": "vorobeva.vik.99@mail.ru",
+        "name": "Виктория Воробьева"
+    }
+}
