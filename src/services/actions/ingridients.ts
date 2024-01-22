@@ -5,7 +5,7 @@ import {
   import { BASE_URL } from "../../utils/url";
   import { urls } from "../../utils/urls";
 import { GET_INGRIDIENTS__REQUEST, GET_INGRIDIENTS__SUCCESS, GET_INGRIDIENTS__FAILURE } from "../constants";
-import { AppDispatch, AppThunkAction, IIngridients } from "../types";
+import { AppThunkAction, IIngridients } from "../types";
 
 const INGRIDIENTSDATA = `${BASE_URL}${urls.ingridients}`;
 

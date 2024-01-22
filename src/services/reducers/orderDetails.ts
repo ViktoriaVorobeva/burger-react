@@ -7,13 +7,13 @@ export type TOrderState = {
   errors: null | boolean,
 };
 
-const initialState: TOrderState = {
+export const initialStateOrder: TOrderState = {
     order: null,
     isLoading: false,
     errors: null,
 }
 
-export const orderReducer = (state = initialState, action: TOrderActions): TOrderState => {
+export const orderReducer = (state = initialStateOrder, action: TOrderActions): TOrderState => {
     switch(action.type) {
         case GET_ORDER__REQUEST: 
           return {

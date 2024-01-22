@@ -7,13 +7,13 @@ export type TForgotState = {
   errors: null | boolean,
 };
 
-const initialState: TForgotState = {
+export const initialStateForgot: TForgotState = {
     email: '',
     isLoading: false,
     errors: null,
 }
 
-export const forgotPasswordReducer = (state = initialState, action: TForgotActions): TForgotState => {
+export const forgotPasswordReducer = (state = initialStateForgot, action: TForgotActions): TForgotState => {
     switch(action.type) {
         case GET_PASSWORD_FORGOT__REQUEST: 
           return {

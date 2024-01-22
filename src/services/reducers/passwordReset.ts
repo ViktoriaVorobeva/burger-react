@@ -7,13 +7,13 @@ export type TResetState = {
   errors: null | boolean,
 };
 
-const initialState: TResetState = {
+export const initialStateReset: TResetState = {
     email: '',
     isLoading: false,
     errors: null,
 }
 
-export const resetPasswordReducer = (state = initialState, action: TResetActions): TResetState => {
+export const resetPasswordReducer = (state = initialStateReset, action: TResetActions): TResetState => {
     switch(action.type) {
         case GET_PASSWORD_RESET__REQUEST: 
           return {

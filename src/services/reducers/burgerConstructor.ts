@@ -12,13 +12,13 @@ export type TConstructorState = {
   constructorIngridients: IIngridientConstructor[];
 };
 
-const initialState: TConstructorState = {
+export const initialStateConstructor: TConstructorState = {
   bun: false,
   constructorIngridients: [],
 };
 
 export const constructorReducer = (
-  state = initialState,
+  state = initialStateConstructor,
   action: TConstructorActions | IGetConstructorClear
 ): TConstructorState => {
   switch (action.type) {
