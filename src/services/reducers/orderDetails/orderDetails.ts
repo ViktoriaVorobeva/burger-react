@@ -1,5 +1,5 @@
-import { TOrderActions } from "../actions";
-import { GET_ORDER__REQUEST, GET_ORDER__FAILURE, GET_ORDER__SUCCESS} from "../constants"
+import { TOrderActions } from "../../actions";
+import { GET_ORDER__REQUEST, GET_ORDER__FAILURE, GET_ORDER__SUCCESS} from "../../constants"
 
 export type TOrderState = {
   order: number | null,

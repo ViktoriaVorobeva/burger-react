@@ -1,11 +1,11 @@
-import { IGetConstructorClear, TConstructorActions } from "../actions";
+import { IGetConstructorClear, TConstructorActions } from "../../actions";
 import {
   ADD_INGRIDIENT,
   DELETE_INGRIDIENT,
   SORT_INGRIDIENT,
   CLEAR_CONSTRUCTOR,
-} from "../constants";
-import { IIngridientConstructor } from "../types";
+} from "../../constants";
+import { IIngridientConstructor } from "../../types";
 
 export type TConstructorState = {
   bun: boolean | string;

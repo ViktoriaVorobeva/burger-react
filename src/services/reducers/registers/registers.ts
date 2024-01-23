@@ -1,4 +1,4 @@
-import { TUserActions } from "../actions";
+import { TUserActions } from "../../actions";
 import { 
     GET_REGISTER__REQUEST, 
     GET_REGISTER__SUCCESS, 
@@ -12,8 +12,8 @@ import {
     GET_LOGOUT__REQUEST,
     GET_LOGOUT__SUCCESS,
     GET_LOGOUT__FAILURE
-  } from "../constants"
-import { TUpUser } from "../types";
+  } from "../../constants"
+import { TUpUser } from "../../types";
 
   export type TUserState = {
     user: string | TUpUser,

@@ -1,20 +1,24 @@
 import {
   constructorReducer as reducer,
   initialStateConstructor as state,
-} from "../reducers";
+} from "..";
 import {
   addIngridient,
   deleteIngridient,
   sortIngridient,
-} from "../actions/burgerConstructor";
+} from "../../actions/burgerConstructor";
 import {
   fluorescentBun,
   craterBun,
   ingredientSauce,
   ingredientMain,
-} from "../../utils/test-constants";
+} from "../../../utils/test-constants";
 
 describe("burger-constructor reducer test", () => {
+  it('should handle the initial state', () => {
+    //@ts-ignore
+    expect(reducer(undefined, {})).toEqual(state);
+  })
   it("should handle add bun", () => {
     expect(reducer(state, addIngridient(fluorescentBun))).toEqual({
       ...state,

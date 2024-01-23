@@ -1,11 +1,15 @@
 import {
     forgotPasswordReducer as reducer,
     initialStateForgot as state,
-  } from "../reducers";
-import { getForgotSuccessAction, getForgotFailureAction } from '../actions/passwordForgot';
-import { email } from '../../utils/test-constants';
+  } from "..";
+import { getForgotSuccessAction, getForgotFailureAction } from '../../actions/passwordForgot';
+import { email } from '../../../utils/test-constants';
 
 describe('forgot-password reducer test', () => {
+    it('should handle the initial state', () => {
+        //@ts-ignore
+        expect(reducer(undefined, {})).toEqual(state);
+      })
     it('should handle forgot-password success', () => {
         expect(reducer(state, getForgotSuccessAction(email)))
             .toEqual({

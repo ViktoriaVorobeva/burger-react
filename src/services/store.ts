@@ -12,7 +12,7 @@ import {
   resetPasswordReducer,
   registerReducer,
 } from "./reducers";
-import { wsReducer, wsUserReducer } from "./reducers/websockets";
+import { wsReducer, wsUserReducer } from "./reducers/websockets/websockets";
 
 declare global {
   interface Window {

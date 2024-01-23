@@ -1,10 +1,14 @@
 import {
     resetPasswordReducer as reducer,
     initialStateReset as state,
-  } from "../reducers";
-import { getResetSuccessAction, getResetFailureAction } from '../actions/passwordReset';
+  } from "..";
+import { getResetSuccessAction, getResetFailureAction } from '../../actions/passwordReset';
 
 describe('reset-password reducer test', () => {
+    it('should handle the initial state', () => {
+        //@ts-ignore
+        expect(reducer(undefined, {})).toEqual(state);
+      })
     it('should handle forgot-password success', () => {
         expect(reducer(state, getResetSuccessAction(true)))
             .toEqual({

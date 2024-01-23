@@ -11,10 +11,14 @@ import {
     wsConnectionErrorUser,
     wsConnectionClosedUser,
     wsGetOrderdsUser
-} from '../actions/websockets';
-import { allOrders, userOrders } from '../../utils/test-constants';
+} from '../../actions/websockets';
+import { allOrders, userOrders } from '../../../utils/test-constants';
 
 describe('websockets reducer test', () => {
+    it('should handle the initial state', () => {
+        //@ts-ignore
+        expect(wsReducer(undefined, {})).toEqual(initialState);
+      })
     it('should handle ws connection success', () => {
         expect(wsReducer(initialState, wsConnectionSuccess()))
             .toEqual({
@@ -46,6 +50,10 @@ describe('websockets reducer test', () => {
 })
 
 describe('user websockets reducer test', () => {
+    it('should handle the initial state', () => {
+        //@ts-ignore
+        expect(wsUserReducer(undefined, {})).toEqual(initialStateUser);
+      })
     it('should handle user ws connection success', () => {
         expect(wsUserReducer(initialStateUser, wsConnectionSuccessUser()))
             .toEqual({

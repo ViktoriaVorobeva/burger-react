@@ -1,6 +1,6 @@
-import { TIngridient } from "../../types/ingridient";
-import { TIngridientsActions } from "../actions";
-import { GET_INGRIDIENTS__FAILURE, GET_INGRIDIENTS__REQUEST, GET_INGRIDIENTS__SUCCESS } from "../constants"
+import { TIngridient } from "../../../types/ingridient";
+import { TIngridientsActions } from "../../actions";
+import { GET_INGRIDIENTS__FAILURE, GET_INGRIDIENTS__REQUEST, GET_INGRIDIENTS__SUCCESS } from "../../constants"
 
 export type TIngridientsState = {
   ingridients: TIngridient[],

@@ -1,33 +1,33 @@
-import { TResetActions } from "../actions";
-import { GET_PASSWORD_RESET__REQUEST, GET_PASSWORD_RESET__SUCCESS, GET_PASSWORD_RESET__FAILURE} from "../constants"
+import { TForgotActions } from "../../actions";
+import { GET_PASSWORD_FORGOT__REQUEST, GET_PASSWORD_FORGOT__SUCCESS, GET_PASSWORD_FORGOT__FAILURE} from "../../constants"
 
-export type TResetState = {
-  email: boolean | string,
+export type TForgotState = {
+  email: string,
   isLoading: boolean,
   errors: null | boolean,
 };
 
-export const initialStateReset: TResetState = {
+export const initialStateForgot: TForgotState = {
     email: '',
     isLoading: false,
     errors: null,
 }
 
-export const resetPasswordReducer = (state = initialStateReset, action: TResetActions): TResetState => {
+export const forgotPasswordReducer = (state = initialStateForgot, action: TForgotActions): TForgotState => {
     switch(action.type) {
-        case GET_PASSWORD_RESET__REQUEST: 
+        case GET_PASSWORD_FORGOT__REQUEST: 
           return {
             ...state,
             isLoading: true,
           }
-          case GET_PASSWORD_RESET__SUCCESS: 
+          case GET_PASSWORD_FORGOT__SUCCESS: 
           return {
             ...state,
             isLoading: false,
             errors: null,
             email: action.payload,
           }
-          case GET_PASSWORD_RESET__FAILURE: 
+          case GET_PASSWORD_FORGOT__FAILURE: 
           return {
             ...state,
             isLoading: false,

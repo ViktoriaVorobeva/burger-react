@@ -1,7 +1,7 @@
 import {
   registerReducer as reducer,
   initialStateRegister as state,
-} from "../reducers";
+} from "..";
 import {
   getRegisterSuccessAction,
   getRegisterFailureAction,
@@ -11,10 +11,14 @@ import {
   getUpFailureAction,
   getLogoutSuccessAction,
   getLogoutFailureAction,
-} from "../actions/registers";
-import { userRegister } from "../../utils/test-constants";
+} from "../../actions/registers";
+import { userRegister } from "../../../utils/test-constants";
 
 describe("registration reducer test", () => {
+  it('should handle the initial state', () => {
+    //@ts-ignore
+    expect(reducer(undefined, {})).toEqual(state);
+  })
   it("should handle registration success", () => {
     expect(reducer(state, getRegisterSuccessAction(userRegister))).toEqual({
       user: userRegister,
