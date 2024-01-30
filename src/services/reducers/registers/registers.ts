@@ -1,4 +1,4 @@
-import { TUserActions } from "../actions";
+import { TUserActions } from "../../actions";
 import { 
     GET_REGISTER__REQUEST, 
     GET_REGISTER__SUCCESS, 
@@ -12,8 +12,8 @@ import {
     GET_LOGOUT__REQUEST,
     GET_LOGOUT__SUCCESS,
     GET_LOGOUT__FAILURE
-  } from "../constants"
-import { TUpUser } from "../types";
+  } from "../../constants"
+import { TUpUser } from "../../types";
 
   export type TUserState = {
     user: string | TUpUser,
@@ -21,13 +21,13 @@ import { TUpUser } from "../types";
     errors: null | boolean,
   };
   
-  const initialState: TUserState = {
+  export const initialStateRegister: TUserState = {
       user: '',
       isLoading: false,
       errors: null,
   }
 
-  export const registerReducer = (state = initialState, action: TUserActions): TUserState => {
+  export const registerReducer = (state = initialStateRegister, action: TUserActions): TUserState => {
       switch(action.type) {
           case GET_REGISTER__REQUEST: 
             return {
@@ -95,7 +95,7 @@ import { TUpUser } from "../types";
             return {
               ...state,
               isLoading: false,
-              errors: false,
+              errors: null,
               user: ''
             }
             case GET_LOGOUT__FAILURE: 

@@ -24,7 +24,7 @@ const BurgerIngridientsCard: React.FC<TCard> = ({ card, id }) => {
   const [{ isDragging }, dragRef] = useDrag(
     () => ({
       type: "ingridient",
-      item: { id: id, type: card.type },
+      item: { _id: id, type: card.type },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
       }),
@@ -35,7 +35,7 @@ const BurgerIngridientsCard: React.FC<TCard> = ({ card, id }) => {
   useEffect(() => {
       let total = 0;
       for (let el of constructor) {
-        if (el.id === id) {
+        if (el._id === id) {
           total++;
         }
       }

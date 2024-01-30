@@ -7,9 +7,9 @@ import {
     WS_CONNECTION_ERROR_USER,
     WS_CONNECTION_CLOSED_USER,
     WS_GET_ORDERS_USER
-} from "../constants";
-import { TUnionWsAction, TUnionWsActionUser } from "../actions";
-import { TOrder } from "../types";
+} from "../../constants";
+import { TUnionWsAction, TUnionWsActionUser } from "../../actions";
+import { TOrder } from "../../types";
 
 type TInitialState = {
     wsConnection: boolean,

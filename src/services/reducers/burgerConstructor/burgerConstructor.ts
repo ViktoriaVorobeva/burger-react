@@ -1,24 +1,24 @@
-import { IGetConstructorClear, TConstructorActions } from "../actions";
+import { IGetConstructorClear, TConstructorActions } from "../../actions";
 import {
   ADD_INGRIDIENT,
   DELETE_INGRIDIENT,
   SORT_INGRIDIENT,
   CLEAR_CONSTRUCTOR,
-} from "../constants";
-import { IIngridientConstructor } from "../types";
+} from "../../constants";
+import { IIngridientConstructor } from "../../types";
 
 export type TConstructorState = {
   bun: boolean | string;
   constructorIngridients: IIngridientConstructor[];
 };
 
-const initialState: TConstructorState = {
+export const initialStateConstructor: TConstructorState = {
   bun: false,
   constructorIngridients: [],
 };
 
 export const constructorReducer = (
-  state = initialState,
+  state = initialStateConstructor,
   action: TConstructorActions | IGetConstructorClear
 ): TConstructorState => {
   switch (action.type) {
@@ -26,17 +26,17 @@ export const constructorReducer = (
       if (action.payload.type === "bun") {
         if (state.bun) {
           const newFilterIngridients = state.constructorIngridients.filter(
-            ({ id }) => id !== state.bun
+            ({ _id }) => _id !== state.bun
           );
           return {
             ...state,
-            bun: action.payload.id,
+            bun: action.payload._id,
             constructorIngridients: [...newFilterIngridients, action.payload],
           };
         }
         return {
           ...state,
-          bun: action.payload.id,
+          bun: action.payload._id,
           constructorIngridients: [
             ...state.constructorIngridients,
             action.payload,

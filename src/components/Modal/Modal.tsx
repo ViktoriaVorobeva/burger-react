@@ -32,13 +32,13 @@ const Modal = ({ children, title, onClose }: React.PropsWithChildren<IModal>) =>
 
   return ReactDOM.createPortal(
         <>
-          <div className={modalStyles.modal}>
+          <div data-cy="modal" className={modalStyles.modal}>
             <div className={modalStyles.title}>
               {title && (
                 <p className="text text_type_main-large">{title}</p>
               )}
             </div>
-            <div className={modalStyles.button}>
+            <div data-cy="close-button" className={modalStyles.button}>
               <CloseIcon onClick={closeModal} type="primary" />
             </div>
             {children}

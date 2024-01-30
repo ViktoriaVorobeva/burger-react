@@ -1,6 +1,6 @@
-import { TIngridient } from "../../types/ingridient";
-import { TIngridientsActions } from "../actions";
-import { GET_INGRIDIENTS__FAILURE, GET_INGRIDIENTS__REQUEST, GET_INGRIDIENTS__SUCCESS } from "../constants"
+import { TIngridient } from "../../../types/ingridient";
+import { TIngridientsActions } from "../../actions";
+import { GET_INGRIDIENTS__FAILURE, GET_INGRIDIENTS__REQUEST, GET_INGRIDIENTS__SUCCESS } from "../../constants"
 
 export type TIngridientsState = {
   ingridients: TIngridient[],
@@ -8,13 +8,13 @@ export type TIngridientsState = {
   errors: null | boolean,
 };
 
-const initialState: TIngridientsState = {
+export const initialStateIngridients: TIngridientsState = {
     ingridients: [],
     isLoading: false,
     errors: null,
 }
 
-export const ingridientsReducer = (state = initialState, action: TIngridientsActions): TIngridientsState => {
+export const ingridientsReducer = (state = initialStateIngridients, action: TIngridientsActions): TIngridientsState => {
     switch(action.type) {
         case GET_INGRIDIENTS__REQUEST: 
           return {

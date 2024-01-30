@@ -6,7 +6,7 @@ import {
   GET_PASSWORD_FORGOT__SUCCESS,
   GET_PASSWORD_FORGOT__FAILURE,
 } from "../constants";
-import { AppDispatch, AppThunkAction, IForgot } from "../types";
+import { AppThunkAction, IForgot } from "../types";
 
 const FORGOTPASSWORDDATA = `${BASE_URL}${urls.forgot}`;
 
